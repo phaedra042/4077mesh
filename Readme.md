@@ -23,7 +23,7 @@ making it impossible to close the source.
 
 # Obligations under the GPL
 
-this project is officially distributed as source code only at \[repo here] if you obtained this in any other way, check with your provider.
+this project is officially distributed as source code only at https://github.com/phaedra042/4077mesh if you obtained this in any other way, check with your provider.
 
 
 
