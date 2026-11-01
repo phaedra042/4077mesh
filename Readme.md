@@ -38,8 +38,7 @@ Whereas **PRD Labs** hath birthed the kernel, laid the RAMLink Cache, and forged
 Therefore, the federation doth enact and ordain the following immutable limits upon **PRD Labs** and all future core maintainers:
 
 ## Article I: The Inviolability of the Local Manifest (Anti-Dictation)
-
-    The Sovereign Node: PRD Labs may author the baseline reference kernel, but they shall have no authority to remotely dictate, override, or forcibly push updates to any node's local routing manifest (manifest.cfg).
+The Sovereign Node: PRD Labs may author the baseline reference kernel, but they shall have no authority to remotely dictate, override, or forcibly push updates to any node's local routing manifest 
 
 **The Right of Schism:**
 Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (The Zero-Termination Standard). If PRD Labs releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
