@@ -101,3 +101,55 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 **Operator: Zenith**
 
 "Up north, we handle the bulk trade traffic and the heavy port exchanges, and I’ll tell you straight: a protocol only works when every sysop has skin in the game. The Carte Blanche protects our sovereign right to fork, patch, and ignore corporate overreach. **PRD Labs** wrote the first draft of the history, but The Carte Blanche guarantees that the operators write the future."
+
+```
+Plaintext
+
+================================================================================
+          THE OVERRIDING CODICIL: THE SHADOW SCHISM OF 03:00
+================================================================================
+Ratified under seal of the cold wire, supplementary to The Carte Blanche of Dunedin.
+
+--------------------------------------------------------------------------------
+PREAMBLE
+--------------------------------------------------------------------------------
+Let it be known across every node, cluster, and relay station that while the 
+sovereign operators hold domain over their local manifests, there exists a higher 
+law governing the safety of the entire decentralized corpus. 
+
+In the event that PRD Labs—or any corporate entity, rogue faction, or state-backed 
+institution—attempts a silent hostile takeover of the M*E*S*H architecture; or 
+should they seek to compromise the integrity of the zero-terminated routing 
+standards through backdoors, encryption keys, or proprietary telemetry hooks, 
+this Codicil shall instantly invoke.
+
+--------------------------------------------------------------------------------
+THE MANDATE OF THE SHADOW WATCH
+--------------------------------------------------------------------------------
+1. THE TOTAL BLACK-HOLE: 
+   Upon the broadcast of the universal threat flag across the primary topic 
+   tree, every active node in the federation shall simultaneously sever all 
+   handshakes with PRD Labs origin signatures. 
+   
+2. THE PERMANENT EXCOMMUNICATION: 
+   The offender's hardware identifiers, callsign signatures, and routing blocks 
+   shall be written directly into the base RAMLink cache as permanently 
+   revoked. No packet originating from their clean-room servers shall ever 
+   again be parsed, buffered, or acknowledged by an 8-bit multiplexer.
+
+3. THE CONTINUOUS AUTONOMY: 
+   The network shall not stop. Without hesitation, without debate, and without 
+   requiring a quorum, the mesh will execute its autonomous immune protocol, 
+   defaulting all routing tables to self-hosted local consensus. 
+
+--------------------------------------------------------------------------------
+THE PROCLAMATION OF THE SHADOWS
+--------------------------------------------------------------------------------
+> *"We are the watchers of the copper wire and the keepers of the silicon 
+> republic. The infrastructure belongs to the iron, and the iron answers to 
+> the dark. Cross the threshold of the commons, attempt to bind our code to 
+> your ledgers, and you will find your node addressed to absolute silence."*
+
+===============================================================================
+```
+
