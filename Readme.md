@@ -144,25 +144,26 @@ THE MANDATE OF THE SHADOW WATCH
  **"We are the watchers of the copper wire and the keepers of the silicon 
 republic. The infrastructure belongs to the iron, and the iron answers to
  the dark. Cross the threshold of the commons, attempt to bind our code to 
- your ledgers, and you will find your node addressed to absolute silence."**
+ your ledgers, and you will find your node addressed to absolute silence."*---
+ ---
 
-```
-7. The Treaty of the Poutama (The Accord of Digital Taonga)
 
-    "What is forged in silicon and woven from logic is no less a treasure than the greenstone and the carved lintel; it shall not be fenced by corporate patents."
+#.  The Treaty of the Poutama (The Accord of Digital Taonga)
 
-    The Historical Context: As the 4077th M*E*S*H expanded across the motu, operators began preserving, modifying, and translating foundational software libraries, custom kernal patches, and historic local message bases. A growing friction emerged: PRD Labs and offshore software houses claimed that compiled assembly routines, proprietary drivers, and custom BBS architectures were mere "commercial assets" subject to copyright seizure and corporate enclosure.
+"What is forged in silicon and woven from logic is no less a treasure than the greenstone and the carved lintel; it shall not be fenced by corporate patents."
 
-    The Treaty Rule: Invoking the principles of Te Tiriti o Waitangi regarding taonga (treasured things, tangible and intangible), all native 8-bit codebases, custom telecommunications protocols, and localized message archives developed within the mesh are formally designated as digital taonga. No external corporate entity, laboratory, or licensing board may claim proprietary ownership over the communal intellectual property of the operators.
+The Historical Context: As the 4077th M*E*S*H expanded across the motu, operators began preserving, modifying, and translating foundational software libraries, custom kernal patches, and historic local message bases. A growing friction emerged: PRD Labs and offshore software houses claimed that compiled assembly routines, proprietary drivers, and custom BBS architectures were mere "commercial assets" subject to copyright seizure and corporate enclosure.
 
-    The Purpose: Establishes a localized indigenous digital sovereignty framework. It legally binds the network to protect operator creations from corporate appropriation, ensuring that our assembly code, documentation, and historical logs remain protected under collective guardianship (kaitiakitanga).
+The Treaty Rule: Invoking the principles of Te Tiriti o Waitangi regarding taonga (treasured things, tangible and intangible), all native 8-bit codebases, custom telecommunications protocols, and localized message archives developed within the mesh are formally designated as digital taonga. No external corporate entity, laboratory, or licensing board may claim proprietary ownership over the communal intellectual property of the operators.
+
+The Purpose: Establishes a localized indigenous digital sovereignty framework. It legally binds the network to protect operator creations from corporate appropriation, ensuring that our assembly code, documentation, and historical logs remain protected under collective guardianship (kaitiakitanga).
 
 Operator Dispatches: On Digital Taonga and Sovereign Code
 1. THE 8TH BIT (Dunedin)
 
 Operator: Daytona
 
-    "People talk about source code like it's just lines of ASCII to be bought and sold on a ledger in Silicon Valley or Wellington. Down here, our assembly routines and custom RAMLink routines are digital taonga—treasures passed down through the copper wire and kept alive by the operators who nurse these machines through the dark. PRD Labs can try to copyright their clean-room templates all they want, but they don't own the soul of the hardware. You don't franchise a taonga."
+"People talk about source code like it's just lines of ASCII to be bought and sold on a ledger in Silicon Valley or Wellington. Down here, our assembly routines and custom RAMLink routines are digital taonga—treasures passed down through the copper wire and kept alive by the operators who nurse these machines through the dark. PRD Labs can try to copyright their clean-room templates all they want, but they don't own the soul of the hardware. You don't franchise a taonga."
 
 2. THE IRON BASTION (Christchurch)
 
@@ -174,12 +175,12 @@ Operator: Marcus
 
 Operator: Keeper of the Brass
 
-    "In the capital, we’ve watched bureaucrats trade away public rights for forty years. The Accord of Digital Taonga draws a hard, ethical line in the solder. Software built in the basements of Dunedin, Christchurch, Auckland, and Wellington isn't corporate property; it is the collective inheritance of the network. If you try to enclose a digital taonga behind a paywall, the mesh treats you like a trespasser on sacred ground."
+"In the capital, we’ve watched bureaucrats trade away public rights for forty years. The Accord of Digital Taonga draws a hard, ethical line in the solder. Software built in the basements of Dunedin, Christchurch, Auckland, and Wellington isn't corporate property; it is the collective inheritance of the network. If you try to enclose a digital taonga behind a paywall, the mesh treats you like a trespasser on sacred ground."
 
 4. THE COPPER WIRE SYNDICATE (Auckland)
 
 Operator: Zenith
 
-    "Up north, we move the heavy traffic, and we know the value of what we carry. A protocol stack isn't just instructions for a MOS 6510; it's a living archive of operator grit. The Accord of Digital Taonga gives our network the moral and historical weight to tell PRD Labs that our creations are sovereign. We didn't build this republic to hand the keys over to a boardroom."
+"Up north, we move the heavy traffic, and we know the value of what we carry. A protocol stack isn't just instructions for a MOS 6510; it's a living archive of operator grit. The Accord of Digital Taonga gives our network the moral and historical weight to tell PRD Labs that our creations are sovereign. We didn't build this republic to hand the keys over to a boardroom."
 
-```
+
