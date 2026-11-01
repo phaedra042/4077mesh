@@ -188,6 +188,7 @@ Operator Dispatches: On Digital Taonga and Sovereign Code
 # THE GHOST-RACK (Hamilton)
 Operator: "Null-Pointer" (Vince)
 Core Belief: *The Radical Isolationist*
+
 **"The Carte Blanche is too polite. You don't sign treaties with an antagonist; you cut the cord. If PRD Labs gave us the kernel, we should have stripped their magic numbers out of the assembly on day one. We don't need a federation with Auckland or Wellington if it means tethering our bus to their infrastructure. At the Ghost-Rack, we run a completely forked, un-synced build. We take packets from the mesh, but we don't broadcast our uptime to anyone. Trust the iron, trust no one else."**
 
 **Current Telemetry & Status: Operating out of an abandoned railway maintenance shed. Runs a heavily modified, undocumented fork of the M*E*S*H kernel that ignores all global broadcast flags. Viewed by the main federation as paranoid recluses, but their relay trunk is bulletproof**
@@ -202,7 +203,9 @@ Current Telemetry & Status: Low-spec, floppy-disk-only node (no hard drive). Rel
 ## THE DIAL-UP MONASTERY (Central Otago High Country)
 Operator: Brother Kenneth
 Core Belief: *The Ascetic Archivist*
+
 **"The network is a secular distraction from the true work: preservation. PRD Labs and the corporate hounds are merely noise on the wire—fleeting illusions that will burn out when the transformers fail. Our duty under the Accord of Digital Taonga is not to wage political war against laboratories, but to transcribe the entire history of the bulletin boards onto magnetic tape and bury it where the corporate ledger cannot reach. We route your packets, but our minds are elsewhere."**
+
 **Current Telemetry & Status: Solar-and-generator-powered rural outpost perched in the high tussock. Functions as an offline deep-archive mirror, syncing with Dunedin only during favorable atmospheric conditions.**
 
 
@@ -210,5 +213,7 @@ Core Belief: *The Ascetic Archivist*
 # THE RED-BRICK BASTION (Christchurch — Polytechnic Annex)
 Operator: Dr. Aris Thorne
 Core Belief: *The Institutional Reformer*
+
 **"We cannot simply yell 'pounding sand' at the people who hold the keys to the academic grants and hardware supply chains. The Carte Blanche is a brilliant rallying cry, but true survival requires institutional infiltration. Some of us inside the university systems are quietly backdooring open-source patches into the official lab distribution channels while pretending to play ball with PRD Labs. You need a shield in the boardroom just as much as you need a soldering iron in the basement."**
+
 **Current Telemetry & Status: Semi-official node operating on institutional mainframes bridged to an 8-bit serial card. Viewed with deep suspicion by radical operators like Vince at the Ghost-Rack, but quietly tolerated because they provide early warning on PRD Labs' internal memo traffic.**
