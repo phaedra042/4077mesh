@@ -53,7 +53,7 @@ No Proprietary Sequestration: **PRD Labs** is perpetually barred from patenting,
 
 Democratized Namespace: **PRD Labs** does not own the topic tree. They cannot legally reserve top-level namespace roots (such as #code, #hardware, or #archive) for exclusive corporate or lab use.
 
-**The Community Amendment:** Any group of three or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the lab. The network validates validity through consensus and RAMLink caching, not executive approval.
+**The Community Amendment:** Any group of three or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the lab. The network validates validity through consensus, not executive approval.
 
 ## Article IV: The Sunset Clause on Centralized Infrastructure
 
