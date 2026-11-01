@@ -86,7 +86,7 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 
 # 2. The Iron Bastion (Christchurch)
 
-* Operator: Marcus**
+**Operator: Marcus**
 
 "At The Iron Bastion, we run heavy iron and twin power rails, and we didn't build a hardened relay trunk just to take marching orders from some startup in a clean-room. The Carte Blanche of Dunedin establishes a very simple, non-negotiable law of physics: code flows downstream from the community, not upstream from a boardroom. PRD Labs gave us a sharp tool, but The Carte Blanche ensures we keep the handle."
 
