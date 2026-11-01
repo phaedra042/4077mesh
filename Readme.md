@@ -154,7 +154,7 @@ republic. The infrastructure belongs to the iron, and the iron answers to
 
 What is forged in silicon and woven from logic is no less a treasure than the greenstone and the carved lintel; it shall not be fenced by corporate patents.
 
-The Historical Context: As the 4077th ```M*E*S*H``` expanded across the motu, operators began preserving, modifying, and translating foundational software libraries, custom kernal patches, and historic local message bases. A growing friction emerged: PRD Labs and offshore software houses claimed that compiled assembly routines, proprietary drivers, and custom BBS architectures were mere "commercial assets" subject to copyright seizure and corporate enclosure.
+The Historical Context: As the 4077th ```M*E*S*H``` expanded across the motu, operators began preserving, modifying, and translating foundational software libraries, custom kernal patches, and historic local message bases. A growing friction emerged: **PRD Labs** and offshore software houses claimed that compiled assembly routines, proprietary drivers, and custom BBS architectures were mere "commercial assets" subject to copyright seizure and corporate enclosure.
 
 The Treaty Rule: Invoking the principles of **Te Tiriti o Waitangi** regarding **taonga** (treasured things, tangible and intangible), all native 8-bit codebases, custom telecommunications protocols, and localized message archives developed within the mesh are formally designated as digital taonga. No external corporate entity, laboratory, or licensing board may claim proprietary ownership over the communal intellectual property of the operators.
 
