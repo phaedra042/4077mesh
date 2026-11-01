@@ -27,7 +27,8 @@ this project is officially distributed as source code only at https://github.com
 
 
 
-THE CARTE BLANCHE OF THE COPPER BRIDGE
+# THE CARTE BLANCHE OF THE COPPER BRIDGE
+
 ​Ratified in the Bleak Midwinter, July 1991 Drafted at the Assembly of the Copper Bridge (Unanimous Operator Consensus)
 ​Preamble:
 ​We, the independent sysops, hardware hackers, and basement watchmen operating the 4077th M*E*S*H across the islands and the Tasman, having endured the hypnotic pulse of amber phosphors, the screeching dialect of copper-wire modems, and, above all, the relentless interference, proprietary tampering, and bureaucratic overreach of PRD Labs do hereby establish this fundamental charter.
