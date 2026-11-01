@@ -141,11 +141,13 @@ THE MANDATE OF THE SHADOW WATCH
    defaulting all routing tables to self-hosted local consensus. 
 ```
 # THE PROCLAMATION OF THE SHADOWS
- **"We are the watchers of the copper wire and the keepers of the silicon 
+```
+"We are the watchers of the copper wire and the keepers of the silicon 
 republic. The infrastructure belongs to the iron, and the iron answers to
  the dark. Cross the threshold of the commons, attempt to bind our code to 
  your ledgers, and you will find your node addressed to absolute silence."*---
- ---
+```
+---
 
 
 #.  The Treaty of the Poutama (The Accord of Digital Taonga)
