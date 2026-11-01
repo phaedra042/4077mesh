@@ -47,7 +47,7 @@ Any sysop reserves the absolute right to fork, patch, or strip out core kernel m
 
 **Perpetual Copyleft:** All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the **GNU General Public License v3+.**
 
-No Proprietary Sequestration: **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the ```M*E*S*H``` protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests shall automatically blacklist their origin signature as hostile traffic.
+**No Proprietary Sequestration:** **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the ```M*E*S*H``` protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests shall automatically blacklist their origin signature as hostile traffic.
 
 ## Article III: The Open-Core Protocol (The Extensibility Right)
 
