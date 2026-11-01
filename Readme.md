@@ -181,7 +181,7 @@ Operator Dispatches: On Digital Taonga and Sovereign Code
 ---
 
 
-# EXPANDED MESH NODE CENSUS & IDEOLOGICAL SPECTRUM
+## EXPANDED MESH NODE CENSUS & IDEOLOGICAL SPECTRUM
 ## Transmitted via asynchronous packet relay over the 4077th M*E*S*H network.Current Regional Topology & Dissenting Factions.
 
 
