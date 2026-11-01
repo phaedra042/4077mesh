@@ -210,7 +210,7 @@ Core Belief: *The Ascetic Archivist*
 
 
 
-# THE RED-BRICK BASTION (Christchurch — Polytechnic Annex)
+## THE RED-BRICK BASTION (Christchurch — Polytechnic Annex)
 Operator: Dr. Aris Thorne
 Core Belief: *The Institutional Reformer*
 
