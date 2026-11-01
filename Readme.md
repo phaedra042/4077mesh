@@ -61,6 +61,9 @@ Democratized Namespace: **PRD Labs** does not own the topic tree. They cannot le
 
 **Resilient Decentralization:** The mesh must remain fully capable of bootstrapping, routing, and maintaining historical synchronization even if **PRD Labs** suffers a catastrophic power failure, burns to the ground, or simply closes its doors.
 
+
+---
+
 *Signed and Sealed in the Copper Wire:*
 
 ```
