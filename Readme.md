@@ -198,11 +198,14 @@ Core Belief: *The Pragmatic Hardware Fundamentalist*
 *Look, all this high-falutin' constitutional talk about Shadow Schisms and digital taonga is fine for the kids with RAMLinks and CMD hard drives, but down here at the bottom of the world, we're just trying to keep a pair of 1541 drives spinning with spare rubber bands and sheer bloody-mindedness. PRD Labs wrote sloppy code, sure, but if their reference manual helps me patch a blown CIA chip, I'm not going to throw a brick through their window. Let the academics argue about sovereignty; we've got message traffic to clear before the frost hits the transformer*
 
 Current Telemetry & Status: Low-spec, floppy-disk-only node (no hard drive). Relies on massive disk-swapping stacks and manual message drop-offs. Politically neutral, providing critical southern redundancy while rolling their eyes at ideological purity tests.
+
 ## THE DIAL-UP MONASTERY (Central Otago High Country)
 Operator: Brother Kenneth
 Core Belief: *The Ascetic Archivist*
 **"The network is a secular distraction from the true work: preservation. PRD Labs and the corporate hounds are merely noise on the wire—fleeting illusions that will burn out when the transformers fail. Our duty under the Accord of Digital Taonga is not to wage political war against laboratories, but to transcribe the entire history of the bulletin boards onto magnetic tape and bury it where the corporate ledger cannot reach. We route your packets, but our minds are elsewhere."**
 **Current Telemetry & Status: Solar-and-generator-powered rural outpost perched in the high tussock. Functions as an offline deep-archive mirror, syncing with Dunedin only during favorable atmospheric conditions.**
+
+
 
 # THE RED-BRICK BASTION (Christchurch — Polytechnic Annex)
 Operator: Dr. Aris Thorne
