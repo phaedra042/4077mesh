@@ -63,10 +63,10 @@ Democratized Namespace: **PRD Labs** does not own the topic tree. They cannot le
 
 *Signed and Sealed in the Copper Wire:*
 
-The 8th Bit (Dunedin)
+```The 8th Bit (Dunedin)
 The Iron Bastion (Christchurch)
 The Clockwork Grotto (Wellington)
-The Copper Wire Syndicate (Auckland)
+The Copper Wire Syndicate (Auckland)```
 
 And all valid peer nodes holding active manifests.
 
