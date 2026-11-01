@@ -152,23 +152,21 @@ republic. The infrastructure belongs to the iron, and the iron answers to
 
 # The Treaty of the Poutama (The Accord of Digital Taonga)
 
-"What is forged in silicon and woven from logic is no less a treasure than the greenstone and the carved lintel; it shall not be fenced by corporate patents."
+What is forged in silicon and woven from logic is no less a treasure than the greenstone and the carved lintel; it shall not be fenced by corporate patents.
 
-The Historical Context: As the 4077th M*E*S*H expanded across the motu, operators began preserving, modifying, and translating foundational software libraries, custom kernal patches, and historic local message bases. A growing friction emerged: PRD Labs and offshore software houses claimed that compiled assembly routines, proprietary drivers, and custom BBS architectures were mere "commercial assets" subject to copyright seizure and corporate enclosure.
+The Historical Context: As the 4077th ```M*E*S*H``` expanded across the motu, operators began preserving, modifying, and translating foundational software libraries, custom kernal patches, and historic local message bases. A growing friction emerged: PRD Labs and offshore software houses claimed that compiled assembly routines, proprietary drivers, and custom BBS architectures were mere "commercial assets" subject to copyright seizure and corporate enclosure.
 
-The Treaty Rule: Invoking the principles of Te Tiriti o Waitangi regarding taonga (treasured things, tangible and intangible), all native 8-bit codebases, custom telecommunications protocols, and localized message archives developed within the mesh are formally designated as digital taonga. No external corporate entity, laboratory, or licensing board may claim proprietary ownership over the communal intellectual property of the operators.
+The Treaty Rule: Invoking the principles of **Te Tiriti o Waitangi** regarding **taonga** (treasured things, tangible and intangible), all native 8-bit codebases, custom telecommunications protocols, and localized message archives developed within the mesh are formally designated as digital taonga. No external corporate entity, laboratory, or licensing board may claim proprietary ownership over the communal intellectual property of the operators.
 
-The Purpose: Establishes a localized indigenous digital sovereignty framework. It legally binds the network to protect operator creations from corporate appropriation, ensuring that our assembly code, documentation, and historical logs remain protected under collective guardianship (kaitiakitanga).
+## The Purpose:
+Establishes a localized indigenous digital sovereignty framework. It legally binds the network to protect operator creations from corporate appropriation, ensuring that our assembly code, documentation, and historical logs remain protected under collective guardianship (kaitiakitanga).
 
 Operator Dispatches: On Digital Taonga and Sovereign Code
-1. THE 8TH BIT (Dunedin)
-
+## THE 8TH BIT (Dunedin)
 Operator: Daytona
-
-"People talk about source code like it's just lines of ASCII to be bought and sold on a ledger in Silicon Valley or Wellington. Down here, our assembly routines and custom RAMLink routines are digital taonga—treasures passed down through the copper wire and kept alive by the operators who nurse these machines through the dark. PRD Labs can try to copyright their clean-room templates all they want, but they don't own the soul of the hardware. You don't franchise a taonga."
-
-2. THE IRON BASTION (Christchurch)
-
+``"People talk about source code like it's just lines of ASCII to be bought and sold on a ledger in Silicon Valley or Wellington. Down here, our assembly routines and custom RAMLink routines are digital taonga—treasures passed down through the copper wire and kept alive by the operators who nurse these machines through the dark. PRD Labs can try to copyright their clean-room templates all they want, but they don't own the soul of the hardware. You don't franchise a taonga."
+```
+## THE IRON BASTION (Christchurch)
 Operator: Marcus
 
     "The Treaty of Waitangi established that partnership and protection matter more than crown fiat. We applied that exact principle to the 8-bit underground. When you write a kernel patch that keeps a rural node alive through a dead winter, that code belongs to the commons. The Accord of Digital Taonga ensures that nobody—not PRD Labs, not some venture capitalist with a briefcase—can come in and slap a proprietary lock on our heritage."
