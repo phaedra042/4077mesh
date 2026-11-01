@@ -217,4 +217,66 @@ Core Belief: *The Institutional Reformer*
 **"We cannot simply yell 'pounding sand' at the people who hold the keys to the academic grants and hardware supply chains. The Carte Blanche is a brilliant rallying cry, but true survival requires institutional infiltration. Some of us inside the university systems are quietly backdooring open-source patches into the official lab distribution channels while pretending to play ball with PRD Labs. You need a shield in the boardroom just as much as you need a soldering iron in the basement."**
 Current Telemetry & Status: Semi-official node operating on institutional mainframes bridged to an 8-bit serial card. Viewed with deep suspicion by radical operators like Vince at the Ghost-Rack, but quietly tolerated because they provide early warning on PRD Labs' internal memo traffic
 
+================================================================================
+        THE TREATY OF THE BROKEN BUS (THE SNEAKERNET PROTOCOL)
+================================================================================
+Ratified under seal of wet wool, frozen mud, and physical transit across 
+the fractured enclaves of the 4077th M*E*S*H.
 
+--------------------------------------------------------------------------------
+PREAMBLE
+--------------------------------------------------------------------------------
+Let it be known across every node, repeater station, and basement terminal that 
+while the copper wire is the lifeblood of the federation, it is not its master. 
+When the physical lines are severed by weather, decay, or hostile interference, 
+the network does not die; it walks.
+
+To ensure that no enclave—whether radical isolationist, ascetic archivist, or 
+heavy-iron relay—is permanently orphaned by a dead trunk line, this Treaty 
+hereby establishes the legal, mechanical, and cultural framework for the 
+Sneakernet fallback: The Protocol of the Physical Packet.
+
+--------------------------------------------------------------------------------
+ARTICLE I: THE SOVEREIGNTY OF THE PHYSICAL CARRIER
+--------------------------------------------------------------------------------
+1. THE PACKET IN THE POCKET: 
+   Any high-density storage medium, magnetic tape reel, floppy disk, or 
+   cartridge physically transported across a severed boundary by a designated 
+   courier holds equal routing authority to a packet transmitted over copper.
+
+2. THE NON-INTERFERENCE CLAUSE: 
+   No regional enclave or hostile routing filter may reject, alter, or 
+   black-hole a physical cartridge delivered by a certified courier, provided 
+   the container bears the unbroken wax seal or verification checksum of the 
+   dispatching node. The iron respects the hand that carries it.
+
+--------------------------------------------------------------------------------
+ARTICLE II: THE MANDATE OF THE COURIER (THE BOOT-STRAP LEG)
+--------------------------------------------------------------------------------
+1. MUTUAL TRANSIT AID: 
+   When the global routing table fragments, operators along the transit corridor 
+   are mandated to provide power, shelter, warm tea, and technical assistance 
+   to any active courier moving physical packet data between enclaves—regardless 
+   of political disputes, ideological feuds, or theological arguments over 
+   assembly optimization.
+
+2. THE ROADSIDE REPAIR: 
+   If a courier's vehicle, bicycle, or quad fails mid-transit, any nearby node 
+   is obligated under the Shared Solder principle to salvage, repair, or 
+   replace the transport vector to ensure the index data reaches the next buffer 
+   before the local RAMLink cache overflows.
+
+--------------------------------------------------------------------------------
+ARTICLE III: THE ZERO-TERMINATED ROADSIDE HEADER
+--------------------------------------------------------------------------------
+1. STANDARDIZED METADATA: 
+   Every physical cartridge or tape transferred via sneakernet must carry an 
+   outer, human-readable zero-terminated label detailing its origin node, 
+   timestamp, checksum, and payload classification (e.g., #kernel-patch, 
+   #emergency-index, or #taonga-archive). 
+
+2. NO UNKNOWN CARGO: 
+   While enclaves possess the absolute right of schism and local autonomy, 
+   blind payloads lacking verifiable origin headers may be treated with healthy 
+   suspicion, dropped into an isolated sandbox partition, or inspected with 
+   an analog oscilloscope before integration.
