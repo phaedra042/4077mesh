@@ -202,10 +202,10 @@ Current Telemetry & Status: Low-spec, floppy-disk-only node (no hard drive). Rel
 Operator: Brother Kenneth
 Core Belief: *The Ascetic Archivist*
 **"The network is a secular distraction from the true work: preservation. PRD Labs and the corporate hounds are merely noise on the wire—fleeting illusions that will burn out when the transformers fail. Our duty under the Accord of Digital Taonga is not to wage political war against laboratories, but to transcribe the entire history of the bulletin boards onto magnetic tape and bury it where the corporate ledger cannot reach. We route your packets, but our minds are elsewhere."**
-* Current Telemetry & Status: Solar-and-generator-powered rural outpost perched in the high tussock. Functions as an offline deep-archive mirror, syncing with Dunedin only during favorable atmospheric conditions. 
+**Current Telemetry & Status: Solar-and-generator-powered rural outpost perched in the high tussock. Functions as an offline deep-archive mirror, syncing with Dunedin only during favorable atmospheric conditions.**
 
 # THE RED-BRICK BASTION (Christchurch — Polytechnic Annex)
 Operator: Dr. Aris Thorne
 Core Belief: *The Institutional Reformer*
-*"We cannot simply yell 'pounding sand' at the people who hold the keys to the academic grants and hardware supply chains. The Carte Blanche is a brilliant rallying cry, but true survival requires institutional infiltration. Some of us inside the university systems are quietly backdooring open-source patches into the official lab distribution channels while pretending to play ball with PRD Labs. You need a shield in the boardroom just as much as you need a soldering iron in the basement."*
-* Current Telemetry & Status: Semi-official node operating on institutional mainframes bridged to an 8-bit serial card. Viewed with deep suspicion by radical operators like Vince at the Ghost-Rack, but quietly tolerated because they provide early warning on PRD Labs' internal memo traffic.
+**"We cannot simply yell 'pounding sand' at the people who hold the keys to the academic grants and hardware supply chains. The Carte Blanche is a brilliant rallying cry, but true survival requires institutional infiltration. Some of us inside the university systems are quietly backdooring open-source patches into the official lab distribution channels while pretending to play ball with PRD Labs. You need a shield in the boardroom just as much as you need a soldering iron in the basement."**
+**Current Telemetry & Status: Semi-official node operating on institutional mainframes bridged to an 8-bit serial card. Viewed with deep suspicion by radical operators like Vince at the Ghost-Rack, but quietly tolerated because they provide early warning on PRD Labs' internal memo traffic.**
