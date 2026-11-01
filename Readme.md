@@ -41,13 +41,13 @@ Therefore, the federation doth enact and ordain the following immutable limits u
 **The Sovereign Node:** **PRD Labs** may author the baseline reference kernel, but they shall have no authority to remotely dictate, override, or forcibly push updates to any node's local routing manifest 
 
 **The Right of Schism:**
-Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (The Zero-Termination Standard). If PRD Labs releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
+Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (The Zero-Termination Standard). If **PRD Labs** releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
 
 ## Article II: The Open-Source Safeguard (The Anti-Enclosure Clause)
 
 **Perpetual Copyleft:** All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the **GNU General Public License v3+.**
 
-**No Proprietary Sequestration:** **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the ```M*E*S*H``` protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests shall automatically blacklist their origin signature as hostile traffic.
+**No Proprietary Sequestration:** **PRD Labs** is perpetually barred from **patenting**, **copyright-locking**, or **commercializing** the ```M*E*S*H``` protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests shall automatically blacklist their origin signature as hostile traffic.
 
 ## Article III: The Open-Core Protocol (The Extensibility Right)
 
