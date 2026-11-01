@@ -38,7 +38,7 @@ this project is officially distributed as source code only at https://github.com
 
 ## ​Article I: The Inviolability of the Local Manifest (Anti-Dictation)
 
-​ * The Sovereign Node: 
+​* The Sovereign Node
 
 **PRD Labs** may author the baseline reference kernel, but they shall have no authority to remotely dictate, override, or forcibly push updates to any node's local routing manifest.
 
