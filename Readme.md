@@ -145,11 +145,12 @@ THE MANDATE OF THE SHADOW WATCH
 "We are the watchers of the copper wire and the keepers of the silicon 
 republic. The infrastructure belongs to the iron, and the iron answers to
  the dark. Cross the threshold of the commons, attempt to bind our code to 
- your ledgers, and you will find your node addressed to absolute silence."
+ your ledgers, and you will find your node addressed to absolute silence
+```
 ---
 
 
-#The Treaty of the Poutama (The Accord of Digital Taonga)
+# The Treaty of the Poutama (The Accord of Digital Taonga)
 
 "What is forged in silicon and woven from logic is no less a treasure than the greenstone and the carved lintel; it shall not be fenced by corporate patents."
 
