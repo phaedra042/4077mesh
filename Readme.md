@@ -103,8 +103,6 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 "Up north, we handle the bulk trade traffic and the heavy port exchanges, and I’ll tell you straight: a protocol only works when every sysop has skin in the game. The Carte Blanche protects our sovereign right to fork, patch, and ignore corporate overreach. **PRD Labs** wrote the first draft of the history, but The Carte Blanche guarantees that the operators write the future."
 
 ```
-Plaintext
-
 ================================================================================
           THE OVERRIDING CODICIL: THE SHADOW SCHISM OF 03:00
 ================================================================================
