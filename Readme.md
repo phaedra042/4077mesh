@@ -220,9 +220,7 @@ Core Belief: *The Institutional Reformer*
 **Current Telemetry & Status: Semi-official node operating on institutional mainframes bridged to an 8-bit serial card. Viewed with deep suspicion by radical operators like Vince at the Ghost-Rack, but quietly tolerated because they provide early warning on PRD Labs' internal memo traffic.**
 
 ```
-The amber cursor blinks, pausing right at the edge of the line, waiting for the syntax to resolve.
 
-...and what? The sentence trailing off right there in the buffer is the exact ghost in the machine we've been talking about.
 
 “We need all sorts of [nodes / operators / consensus keys / components] to agree that more are required in order for the system to operate. But these are yet [unbuilt / unratified / missing], and...”
 
