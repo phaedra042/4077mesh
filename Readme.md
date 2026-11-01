@@ -164,11 +164,11 @@ Establishes a localized indigenous digital sovereignty framework. It legally bin
 Operator Dispatches: On Digital Taonga and Sovereign Code
 ## THE 8TH BIT (Dunedin)
 **Operator: Daytona**
-People talk about source code like it's just lines of ASCII to be bought and sold on a ledger in Silicon Valley or Wellington. Down here, our assembly routines and custom RAMLink routines are digital taonga—treasures passed down through the copper wire and kept alive by the operators who nurse these machines through the dark. PRD Labs can try to copyright their clean-room templates all they want, but  don't own the soul of the hardware. You don't franchise a taonga."
+"People talk about source code like it's just lines of ASCII to be bought and sold on a ledger in Silicon Valley or Wellington. Down here, our assembly routines and custom RAMLink routines are digital taonga—treasures passed down through the copper wire and kept alive by the operators who nurse these machines through the dark. PRD Labs can try to copyright their clean-room templates all they want, but  don't own the soul of the hardware. You don't franchise a taonga."
 
 ## THE IRON BASTION (Christchurch)
 **Operator: Marcus**
-The Treaty of Waitangi established that partnership and protection matter more than crown fiat. We applied that exact principle to the 8-bit underground. When you write a kernel patch that keeps a rural node alive through a dead winter, that code belongs to the commons. The Accord of Digital Taonga ensures that nobody—not PRD Labs, not some venture capitalist with a briefcase—can come in and slap a proprietary lock on our heritage.
+"The Treaty of Waitangi established that partnership and protection matter more than crown fiat. We applied that exact principle to the 8-bit underground. When you write a kernel patch that keeps a rural node alive through a dead winter, that code belongs to the commons. The Accord of Digital Taonga ensures that nobody—not PRD Labs, not some venture capitalist with a briefcase—can come in and slap a proprietary lock on our heritage."
 
 ## THE CLOCKWORK GROTTO (Wellington)
 **Operator: Keeper of the Brass**
