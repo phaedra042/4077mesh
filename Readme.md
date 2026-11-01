@@ -94,10 +94,10 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 
 **Operator: Keeper of the Brass**
 
-"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. PRD Labs birthed the M*E*S*H architecture under GPLv3, and The Carte Blanche simply makes sure they can never take it back. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
+"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. PRD Labs birthed the ```M*E*S*H``` architecture under GPLv3, and The Carte Blanche simply makes sure they can never take it back. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
 
 # 4. The Copper Wire Syndicate (Auckland)
 
 **Operator: Zenith**
 
-"Up north, we handle the bulk trade traffic and the heavy port exchanges, and I’ll tell you straight: a protocol only works when every sysop has skin in the game. The Carte Blanche protects our sovereign right to fork, patch, and ignore corporate overreach. PRD Labs wrote the first draft of the history, but The Carte Blanche guarantees that the operators write the future."
+"Up north, we handle the bulk trade traffic and the heavy port exchanges, and I’ll tell you straight: a protocol only works when every sysop has skin in the game. The Carte Blanche protects our sovereign right to fork, patch, and ignore corporate overreach. **PRD Labs** wrote the first draft of the history, but The Carte Blanche guarantees that the operators write the future."
