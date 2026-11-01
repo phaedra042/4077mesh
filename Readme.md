@@ -32,7 +32,7 @@ this project is officially distributed as source code only at https://github.com
 ​Ratified in the Bleak Midwinter, July 1991 Drafted at the Assembly of the Copper Bridge (Unanimous Operator Consensus)
 ​Preamble:
 
-​We, the independent sysops, hardware hackers, and basement watchmen operating the 4077th M*E*S*H across the islands and the Tasman, having endured the hypnotic pulse of amber phosphors, the screeching dialect of copper-wire modems, and, above all, the relentless interference, proprietary tampering, and bureaucratic overreach of **PRD Labs** do hereby establish this fundamental charter.
+​We, the independent sysops, hardware hackers, and basement watchmen operating the 4077th ``M*E*S*H`` across the islands and the Tasman, having endured the hypnotic pulse of amber phosphors, the screeching dialect of copper-wire modems, and, above all, the relentless interference, proprietary tampering, and bureaucratic overreach of **PRD Labs** do hereby establish this fundamental charter.
 ​Whereas **PRD Labs** hath birthed the kernel, laid the RAMLink Cache, and forged the initial 6510 assembly primitives, let it be known that code is a tool, not a crown. No laboratory, corporate entity, or founding designer shall hold absolute dominion over the network's breathing architecture.
 ​Therefore, the federation doth enact and ordain the following immutable limits upon **PRD Labs** and all future core maintainers:
 
@@ -50,7 +50,7 @@ Any sysop reserves the absolute right to fork, patch, or strip out core kernel m
 
 The Open-Source Safeguard (The Anti-Enclosure Clause)
 ​Perpetual Copyleft: All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the GNU General Public License v3+.
-​No Proprietary Sequestration: **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the M*E*S*H protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests may automatically blacklist their origin signature as hostile traffic.
+​No Proprietary Sequestration: **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests may automatically blacklist their origin signature as hostile traffic.
 
 ## Article III:
 The Open-Core Protocol (The Extensibility Right)
