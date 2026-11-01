@@ -76,3 +76,28 @@ The Copper Wire Syndicate (Auckland)
 And all valid peer nodes holding active manifests.
 
 Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter ensures that if the mechanics ever try to tell us where we're allowed to drive, we can lock the basement door from the inside.
+
+
+# 1. The 8th Bit (Dunedin)
+
+** Operator: Daytona **
+
+    "PRD Labs can engineer all the elegant RAMLink caching routines they want, but a laboratory is not a legislature. We wrote The Carte Blanche because we’re the ones sitting in cold basements nursing dying power supplies and dodging capacitor smoke at three in the morning—not the programmers in the ivory tower. If PRD Labs ever tries to backdoor a proprietary lock into the core kernel, our local manifests will autonomously black-hole their handshake before their modems even finish dialing."
+
+# 2. The Iron Bastion (Christchurch)
+
+** Operator: Marcus **
+
+    "At The Iron Bastion, we run heavy iron and twin power rails, and we didn't build a hardened relay trunk just to take marching orders from some startup in a clean-room. The Carte Blanche of Dunedin establishes a very simple, non-negotiable law of physics: code flows downstream from the community, not upstream from a boardroom. PRD Labs gave us a sharp tool, but The Carte Blanche ensures we keep the handle."
+
+# 3. The Clockwork Grotto (Wellington)
+
+** Operator: Keeper of the Brass **
+
+    "Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. PRD Labs birthed the M*E*S*H architecture under GPLv3, and The Carte Blanche simply makes sure they can never take it back. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
+
+4. The Copper Wire Syndicate (Auckland)
+
+Operator: Zenith
+
+    "Up north, we handle the bulk trade traffic and the heavy port exchanges, and I’ll tell you straight: a protocol only works when every sysop has skin in the game. The Carte Blanche protects our sovereign right to fork, patch, and ignore corporate overreach. PRD Labs wrote the first draft of the history, but The Carte Blanche guarantees that the operators write the future."
