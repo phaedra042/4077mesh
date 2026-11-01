@@ -84,7 +84,7 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 
 "PRD Labs can engineer all the elegant RAMLink caching routines they want, but a laboratory is not a legislature. We wrote The Carte Blanche because we’re the ones sitting in cold basements nursing dying power supplies and dodging capacitor smoke at three in the morning—not the programmers in the ivory tower. If PRD Labs ever tries to backdoor a proprietary lock into the core kernel, our local manifests will autonomously black-hole their handshake before their modems even finish dialing."
 
-#$$ 2. The Iron Bastion (Christchurch)
+### 2. The Iron Bastion (Christchurch)
 
 **Operator: Marcus**
 
