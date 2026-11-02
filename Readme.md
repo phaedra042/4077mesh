@@ -67,7 +67,7 @@ The Sunset Clause on Centralized Infrastructure
 
 ### Zero Single Points of Failure: 
 
-No reference node, relay station, or administrative testbed operated directly by **PRD Labs** shall ever be designated as a mandatory bootstrap anchor for the global network.
+No reference node, relay station, or administrative testbed operated directly by **PRD Labs** shall ever be designated as a mandatory bootstrap or anchor for the global network.
 
 ### Resilient Decentralization: 
 
