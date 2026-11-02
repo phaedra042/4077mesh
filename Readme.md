@@ -42,7 +42,7 @@ The Inviolability of the Local Manifest (Anti-Dictation)
 
 ### The Right of Schism:
 
-Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (The Zero-Termination Standard). If **PRD Labs** releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
+Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (Formalities of the Handshake and Data Packet). If **PRD Labs** releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
 
 ## Article II:
 The Open-Source Safeguard (The Anti-Enclosure Clause)
