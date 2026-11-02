@@ -42,7 +42,7 @@ The Inviolability of the Local Manifest (Anti-Dictation)
 
 ### The Right of Schism:
 
-Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (Formalities of the Handshake and Data Packet). If **PRD Labs** releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
+Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (Formalities of the Handshake and Data Packet). If **PRD Labs** releases an update that bloats memory or compromises local stability, the node operators may under the concordat tell **PRD Labs** to pound sand and stay on the stable build indefinitely.
 
 ## Article II:
 The Open-Source Safeguard (The Anti-Enclosure Clause)
@@ -51,18 +51,18 @@ The Open-Source Safeguard (The Anti-Enclosure Clause)
 All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the GNU General Public License v3+.
 ​
 ### No Proprietary Sequestration:
-**PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests may automatically blacklist their origin signature as hostile traffic.
+**PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, Individual nodes may elect to reject, filter, or quarantine traffic and treat their origin signature as hostile traffic.
 
 ## Article III:
 The Open-Core Protocol (The Extensibility Right)
 
 ### Democratized Namespace: 
 
-**PRD Labs** does not own the topic tree. They cannot legally reserve top-level namespace roots (such as #code, #hardware, or #archive) for exclusive corporate or lab use.
+**PRD Labs** does not own the topic tree. They shall not reserve top-level namespace roots (such as #code, #hardware, or #archive) for exclusive corporate or lab use.
 
 ### The Community Amendment: 
 
-Any group of two or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the **PRD Labs**. The network validates validity through consensus, not executive approval.
+Any group of two or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the **PRD Labs**. The network establishes legitimacy through consensus, not executive approval..
 
 ## Article IV:
 The Sunset Clause on Centralized Infrastructure
