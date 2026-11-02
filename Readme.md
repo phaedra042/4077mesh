@@ -33,9 +33,10 @@ The independent sysops and hardware hackers running the 4077th ```M*E*S*H``` acr
 
 Code is a tool, not a crown. To prevent further corporate overreach, proprietary tampering, and bureaucratic bloat, the federation establishes these immutable limits for all core maintainers:
 
-## ​Article I: The Inviolability of the Local Manifest (Anti-Dictation)
+## ​Article I:
+The Inviolability of the Local Manifest (Anti-Dictation)
 ​
-## The Sovereign Node:
+### The Sovereign Node:
 
 **PRD Labs** may author the baseline reference kernel, but they shall have no authority to remotely dictate, override, or forcibly push updates to any node's local routing manifest.
 
@@ -44,9 +45,10 @@ Code is a tool, not a crown. To prevent further corporate overreach, proprietary
 Any sysop reserves the absolute right to fork, patch, or strip out core kernel modules without forfeiting their peer-routing status, provided their packets adhere strictly to RFC-01 (The Zero-Termination Standard). If **PRD Labs** releases an update that bloats memory or compromises local stability, the node operators may legally tell the lab to pound sand and stay on the stable build indefinitely.
 
 ## Article II:
-
 The Open-Source Safeguard (The Anti-Enclosure Clause)
-​Perpetual Copyleft: All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the GNU General Public License v3+.
+
+### Perpetual Copyleft:
+All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the GNU General Public License v3+.
 ​
 ### No Proprietary Sequestration:
 **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, the network’s decentralized peer-routing manifests may automatically blacklist their origin signature as hostile traffic.
