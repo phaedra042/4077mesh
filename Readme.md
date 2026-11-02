@@ -60,7 +60,7 @@ The Open-Core Protocol (The Extensibility Right)
 
 ### The Community Amendment: 
 
-Any group of two or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the lab. The network validates validity through consensus, not executive approval.
+Any group of two or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the **PRD Labs**. The network validates validity through consensus, not executive approval.
 
 ## Article IV:
 The Sunset Clause on Centralized Infrastructure
