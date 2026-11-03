@@ -118,7 +118,7 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 
 **Operator: Keeper of the Brass**
 
-"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. **PRD Labs** birthed the ```M*E*S*H``` architecture under a permissive BSD license. The Concordat ensured that the commons they started could never be enclosed again. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
+"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. **PRD Labs** birthed the ```M*E*S*H``` architecture under a permissive BSD license. The Concordat ensures that the commons they started could never be enclosed again. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
 
 ### 4. The Copper Wire Syndicate (Auckland)
 
