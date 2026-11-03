@@ -48,13 +48,13 @@ Any sysop reserves the absolute right to fork, patch, or strip out core kernel m
 The Open-Source Safeguard (The Anti-Enclosure Clause)
 
 ### Perpetual Copyleft:
-All core protocol specifications, assembler macros, and network drivers remain irrevocably bound to the GNU General Public License v3+.
+All core protocol specifications, assembler macros, and network drivers have been moved to and remain irrevocably bound to the GNU General Public License v3+.
 ​
 ### No Proprietary Sequestration:
 **PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, Individual nodes may elect to reject, filter, or quarantine traffic and treat their origin signature as hostile traffic.
 
 ## Article III:
-The Open-Core Protocol (The Extensibility Right)
+The Open Architecture Protocol (The Extensibility Right)
 
 ### Democratized Namespace: 
 
@@ -118,7 +118,7 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 
 **Operator: Keeper of the Brass**
 
-"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. **PRD Labs** birthed the ```M*E*S*H``` architecture under GPLv3, and The Concordat simply makes sure they can never take it back. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
+"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. **PRD Labs** birthed the ```M*E*S*H``` architecture under a permissive BSD license. The Concordat ensured that the commons they started could never be enclosed again. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
 
 ### 4. The Copper Wire Syndicate (Auckland)
 
