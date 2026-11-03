@@ -48,10 +48,10 @@ Any sysop reserves the absolute right to fork, patch, or strip out core kernel m
 The Open-Source Safeguard (The Anti-Enclosure Clause)
 
 ### Perpetual Copyleft:
-All core protocol specifications, assembler macros, and network drivers have been moved to and remain irrevocably bound to the GNU General Public License v3+.
+All core protocol specifications, assembler macros, and network drivers have been forked and remain irrevocably bound to the GNU General Public License v3+.
 ​
 ### No Proprietary Sequestration:
-**PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, Individual nodes may elect to reject, filter, or quarantine traffic and treat their origin signature as hostile traffic.
+**PRD Labs** is perpetually barred from patenting, copyright-locking, or commercializing the **concordat** fork of the ``M*E*S*H``protocol stack into a closed-source product. Should **PRD Labs** ever attempt to license out the architecture to corporate interests or lock future iterations behind a paywall, Individual nodes may elect to reject, filter, or quarantine traffic and treat their origin signature as hostile traffic.
 
 ## Article III:
 The Open Architecture Protocol (The Extensibility Right)
@@ -62,7 +62,7 @@ The Open Architecture Protocol (The Extensibility Right)
 
 ### The Community Amendment: 
 
-Any group of two or more federated nodes may propose, ratify, and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from the **PRD Labs**. The network establishes legitimacy through consensus, not executive approval..
+Any group of two or more federated nodes may propose and broadcast a new global topic branch across the mesh without requiring certification, stamp, or blessing from **PRD Labs**. The network establishes legitimacy through consensus and acceptance in aggregate, not executive approval.
 
 ## Article IV:
 The Sunset Clause on Centralized Infrastructure
@@ -80,7 +80,7 @@ The Right to Modify and The Obligation to Share (The Common Forge)
 
 ### The Sovereign Right to Modify: 
 
-Every sysop, hardware hacker, and node operator possesses the unalienable right to disassemble, adapt, refactor, and mutate any line of source code, assembly primitive, or protocol driver running on their machine. No creator or core maintainer may legally restrict a user’s ability to reshape the tools they run.
+Every sysop, hardware hacker, and node operator possesses the inalienable right to disassemble, adapt, refactor, and mutate any line of source code, assembly primitive, or protocol driver running on their machine. No creator or core maintainer may legally restrict a user’s ability to reshape the tools they run.
 
 ### The Sacred Obligation to Share:
 
@@ -118,7 +118,7 @@ Sysop Note: **PRD Labs** gave us the engine, but we built the road. This charter
 
 **Operator: Keeper of the Brass**
 
-"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. **PRD Labs** birthed the ```M*E*S*H``` architecture under a permissive BSD license. The Concordat ensures that the commons they started could never be enclosed again. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
+"Down here in the government vaults of Wellington, we’ve seen enough centralized bureaucracies try to franchise public infrastructure. **PRD Labs** birthed the ```M*E*S*H``` architecture into the Public Domain. The Concordat ensures that the commons they started could never be enclosed again. A network built on 8-bit silicon survives because it belongs to everyone, not because a single laboratory holds the patent deed. Try to enclose the commons, and your node gets unceremoniously pruned to zero."
 
 ### 4. The Copper Wire Syndicate (Auckland)
 
