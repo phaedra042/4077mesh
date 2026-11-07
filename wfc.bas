@@ -126,61 +126,78 @@
 910 V=PEEK(49155)
 920 IF V<255 THEN POKE 49155,V+1
 930 RETURN
+1000 REM GET-TIME
+1010 OPEN 1,VAL(HD$),15:PRINT#1,"T-RA":T$=""
+1020 GET#1,K$:T$=T$+K$:IF ST<>64 THEN 1020
+1030 CLOSE1
+1040 DA$=MID$(T$,9,2):MO$=MID$(T$,6,2):YE$=MID$(T$,12,2):HO$=MID$(T$,15,2)
+1050 MI$=MID$(T$,18,2):AP$=MID$(T$,24,2)
+1060 RETURN
+
+
 10000 REM PRG START
+
 10001 PRINT"";
 10011 POKE53280,0:POKE53281,0
-10021 PRINT"";
-10031 PRINT"";
-10041 PRINT"    * * * 4077 - ";
-10051 PRINT"MESH NODE * * *    ";
-10061 PRINT"  ";
-10071 PRINT"          WAITING FOR C";
-10081 PRINT"ALL            ";
-10091 PRINT"                       ";
-10101 PRINT"               ";
-10111 PRINT" DATE:2026/09/10     ";
-10121 PRINT"      TIME:17:45 ";
-10131 PRINT"                        ";
-10141 PRINT"              ";
-10151 PRINT" LAST CALL:NOBODY   ";
-10161 PRINT"                  ";
-10171 PRINT"                        ";
-10181 PRINT"              ";
-10191 PRINT"                        ";
-10201 PRINT"              ";
-10211 PRINT"  ";
-10221 PRINT"              ";
-10231 PRINT"CRON STATUSINACTIVE";
-10241 PRINT"                ";
-10251 PRINT"  ";
-10261 PRINT"              ";
-10271 PRINT"";
-10281 PRINT"";
-10291 PRINT"              COMMANDS";
-10301 PRINT"                ";
-10311 PRINT"CRON/LAUNCH SCHEDULAR  ";
-10321 PRINT"               ";
-10331 PRINT"RING/INITIATE LOCAL CON";
-10341 PRINT"NECTION        ";
-10351 PRINT"USER MANAGEMENT        ";
-10361 PRINT"               ";
-10371 PRINT"DISABLE/ENABLE CRON    ";
-10381 PRINT"               ";
-10391 PRINT"LOGI-SLAM              ";
-10401 PRINT"               ";
-10411 PRINT"                    ";
-10421 PRINT"                 ";
-10431 PRINT"                       ";
-10441 PRINT"               ";
-10451 PRINT"                      ";
-10461 PRINT"                ";
-10471 PRINT"                        ";
-10481 PRINT"              ";
-10491 PRINT"                        ";
-10501 PRINT"              ";
-10511 PRINT"";
-10521 PRINT"";
+10021 PRINT"";
+10031 PRINT"";
+10041 PRINT"    * * * 4077 - MES";
+10051 PRINT"H NODE * * *      ";
+10061 PRINT"          WAITING FOR CALL";
+10071 PRINT"            ";
+10081 PRINT"                          ";
+10091 PRINT"            ";
+10101 PRINT" DATE:2026/09/10      ";
+10111 PRINT"     TIME:17:45 ";
+10121 PRINT"                          ";
+10131 PRINT"            ";
+10141 PRINT" LAST CALL:NOBODY     ";
+10151 PRINT"                ";
+10161 PRINT"                          ";
+10171 PRINT"            ";
+10181 PRINT"                          ";
+10191 PRINT"            ";
+10201 PRINT"         ";
+10211 PRINT"            ";
+10221 PRINT"     STATUSC         ";
+10231 PRINT"              ";
+10241 PRINT"         ";
+10251 PRINT"            ";
+10261 PRINT"";
+10271 PRINT"";
+10281 PRINT"              COMMANDS ";
+10291 PRINT"               ";
+10301 PRINT"CRON/LAUNCH SCHEDULAR    ";
+10311 PRINT"             ";
+10321 PRINT"RING/INITIATE LOCAL CONNE";
+10331 PRINT"CTION        ";
+10341 PRINT"USER MANAGEMENT          ";
+10351 PRINT"             ";
+10361 PRINT"DISABLE/ENABLE CRON      ";
+10371 PRINT"             ";
+10381 PRINT"LOGI-SLAM                ";
+10391 PRINT"             ";
+10401 PRINT"                      ";
+10411 PRINT"               ";
+10421 PRINT"                         ";
+10431 PRINT"             ";
+10441 PRINT"                        ";
+10451 PRINT"              ";
+10461 PRINT"                          ";
+10471 PRINT"            ";
+10481 PRINT"                          ";
+10491 PRINT"            ";
+10501 PRINT"";
+10511 PRINT"";
+
+
+
+
+
 10530 GETA$ :IF A$="" THEN GOTO 10530
 10540 POKE 49155,255 : POKE 49156,255 
 10550 PRINT A$
-10560 GOTO 10530
+10560 GOSUB 1000 : REM GET TIME
+10570 PRINT "";:REM POSITION TIME
+10580 PRINT HO$+":"+MI$+""
+10590 GOTO 10530
