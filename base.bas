@@ -2,7 +2,7 @@
 5 REM ==========================================
 6 REM  BASE.PRG - CORE SYSTEM INITIALIZATION
 7 REM ==========================================
-9 CLR
+9 CLR :POKE 49154,0
 10 A=PEEK(49152): B=PEEK(49153) :REM CHECK $C000/$C001
 20 IF A=0 THEN A=PEEK(186): B=1 :REM COLD BOOT: FALL BACK TO DEVICE 186, PART 1
 30 P$=MID$(STR$(B),2)           :REM CLEAN PARTITION STRING
