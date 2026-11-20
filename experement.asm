@@ -1,9 +1,9 @@
 ;------------------------------------------------------------------------------
 ; I/O and the RAM windows between the I/O chips
 ;------------------------------------------------------------------------------
-via1_prb       = $8000                  ; VIA #1 port B: serial bus. b0 DATA in, b1 DATA out, b2 CLK in, b3 CLK out, b4 ATN ack, b5 fast-serial direction, b7 ATN in
-via1_ddrb      = $8002                  ; VIA #1 DDRB ($3A: bits 1,3,4,5 are outputs)
-via1_ddra      = $8003                  ; VIA #1 DDRA: set to $3A like DDRB at reset, never touched again. Port A is probably the AUXILIARY serial port (AUX ATN/CLK/DATA, manual app. F), unused in v1.92
+via1_prb       = $8000    ; VIA #1 port B = serial bus (schematic U10): b0 DATA IN, b1 DATA OUT, b2 CLK IN, b3 CLK OUT, b4 ATN ACK, b5 FST DIR, b6 ATN OUT (used as controller), b7 ATN IN. CA1 = ATN, CB1 = FST CLK, CB2 = FST DATA
+via1_ddrb      = $8002    ; VIA #1 DDRB ($3A: b1, b3, b4, b5 are outputs; $7A adds b6 ATN OUT while we are bus controller)
+via1_ddra      = $8003    ; VIA #1 DDRA = $3A like DDRB. Port A is the AUX serial port: PA0 AUX DATA IN, PA1 AUX DATA OUT, PA2 AUX CLK IN, PA3 AUX CLK OUT, PA4 AUX ATN OUT (outputs: PA1, 3, 4 and PA5 SB RESET ENA), PA6 SB RESET IN, PA7 AUX ATN in
 via1_t2cl      = $8008                  ; VIA #1 timer 2 counter low
 via1_t2ch      = $8009                  ; VIA #1 timer 2 counter high
 via1_sr        = $800A                  ; VIA #1 shift register: fast-serial (burst) data byte
@@ -11,11 +11,11 @@ via1_acr       = $800B                  ; VIA #1 ACR: bits 2-4 select shift-in (
 via1_pcr       = $800C                  ; VIA #1 PCR
 via1_ifr       = $800D                  ; VIA #1 IFR: b1 CA1 = ATN edge, b2 shift register done, b6 timer 1
 via1_ier       = $800E                  ; VIA #1 IER
-via1_pra_nh    = $800F                  ; VIA #1 port A without handshake: probably the AUXILIARY (printer) serial port; written $FF at reset, otherwise unused
+via1_pra_nh    = $800F    ; VIA #1 port A (no handshake) = AUX port, see via1_ddra. Written $FF at reset (all lines released) and never used again in v1.92
 part_type      = $8200                  ; partition table: type per partition (0 not created,1 native,2 1541,3 1571,4 1581,5 1581 CP/M,6 print buffer,7 foreign,$FF system)
 part_size_hi   = $8300                  ; partition table: size in 512-byte blocks, middle byte (entry byte 28; G-P bytes 27-29 = hi,mid,lo)
-via2_prb       = $8400                  ; VIA #2 port B: SCSI bus control lines
-via2_pra       = $8401                  ; VIA #2 port A: SCSI data bus
+via2_prb       = $8400    ; VIA #2 port B = SCSI control (schematic U9): b0 C/D, b1 MSG, b2 I/O (the bus phase), b3 BDIR (data bus direction), b4 SEL OUT, b5 BSY, b6 ACK IN, b7 REQ
+via2_pra       = $8401    ; VIA #2 port A = SCSI data bus DB0-DB7 through the 74F245 transceiver; CA1 = SCSI RST in, CA2 = ACK strobe (hardware handshake), CB2 = FORCE
 via2_ddrb      = $8402                  ; VIA #2 DDRB
 via2_ddra      = $8403                  ; VIA #2 DDRA: $00 = data bus input, $FF = output
 via2_sr        = $840A                  ; VIA #2 shift register
@@ -24,9 +24,9 @@ via2_ifr       = $840D                  ; VIA #2 IFR
 via2_ier       = $840E                  ; VIA #2 IER
 part_size_lo   = $8600                  ; partition table: size in 512-byte blocks, low byte (entry byte 29)
 part_start_hi  = $8700                  ; partition table: start block, high byte (entry byte 19; 512-byte blocks)
-ppi_pa         = $8800                  ; 8255 port A: parallel port data (RAMLink / parallel cable)
-ppi_pb         = $8801                  ; 8255 port B (input): b7 parallel request from host, b6 host handshake, b1 SWAP 8, b2 SWAP 9, b3 WRITE PROTECT (front panel buttons, active low)
-ppi_pc         = $8802                  ; 8255 port C (output): b7 drive handshake
+ppi_pa         = $8800    ; 8255 port A = PD0-PD7 of the parallel port J4 (14-pin DIN)
+ppi_pb         = $8801    ; 8255 port B (inputs): b0 PRDY IN, b1 SWAP 8 button, b2 SWAP 9 button, b3 WRITE PROTECT button (buttons active low), b4 SEL IN (SCSI), b5 PEXT IN, b6 PCLK IN, b7 PATN (parallel ATN)
+ppi_pc         = $8802    ; 8255 port C (outputs): b0 ROMOS, b1 ALTMAP (alternate memory map), b2 ATN OUT (SCSI), b3 RST OUT (SCSI), b4 BSY OUT (SCSI), b5 PEXT OUT, b6 PCLK OUT, b7 PRDY OUT
 ppi_ctrl       = $8803                  ; 8255 control word: $92 = port A input, $82 = port A output
 part_start_mid = $8A00                  ; partition table: start block, middle byte (entry byte 20)
 part_start_lo  = $8B00                  ; partition table: start block, low byte (entry byte 21)
@@ -319,7 +319,7 @@ parity_tbl         = $9300         ; Parity helper table ($9300-$93FF)
 ; original file byte for byte (drop the !word line to get the bare image).
 
 ;------------------------------------------------------------------------------
-        !to "hdos_v1.92_symbolic.prg", plain
+        !to "hdos_v1.92_symbolicv2.prg", plain
 
 * = $93FE
         !word $2000                      ; PRG load address header of the original file
@@ -549,7 +549,7 @@ par_recv_byte
         lda ppi_pc
         ora #$80                 ; acknowledge: PC7 high
         sta ppi_pc
-        lda #$01                 ; bit mask for PB0 = EOI flag from host
+        lda #$01                 ; bit mask for PB0 (PRDY IN), used as the EOI flag
 par_recv_wait_host_strobe
         bit ppi_pb
         bmi par_atn_abort
@@ -617,7 +617,7 @@ getatn_wait_host_data            ; wait for the host to present a byte (PB6 low 
         ldy ppi_pa               ; byte from port A
         sty iec_byte
         lda #$01
-        bit ppi_pb               ; PB0 set means this byte is an address (LISTEN/TALK), not data
+        bit ppi_pb               ; PB0 (PRDY IN) set: this byte is an address (LISTEN/TALK), not data
         beq getatn_ack_atn_byte
         cpy talk_addr            ; only accept addresses meant for this device
         beq getatn_ack_atn_byte
@@ -14456,7 +14456,7 @@ scsi_release_data_latch
 
 ; --- scsi_bus_phase: Handle the SCSI bus phases (data in / out, status, message)
 ; Follow the SCSI bus phases until the target releases the bus. VIA2 port B: bit 7 = REQ,
-; bit 6 = ACK, bit 5 = BSY, bits 0-2 = I/O, C/D, MSG (the phase). Port A is the data bus,
+; bit 6 = ACK, bit 5 = BSY, bit 2 = I/O, bit 1 = MSG, bit 0 = C/D (the phase). Port A is the data bus,
 ; with the parity bit from the control latch.
 scsi_bus_phase
         lda #$20
@@ -15665,7 +15665,7 @@ ctl_latch_save_unlock
         pla
         rts
 
-; --- ppi_pc1_on: Set 8255 port C bit 1
+; --- ppi_pc1_on: Set 8255 port C bit 1 (ALTMAP, the alternate memory map)
 ; Set bit 1 of 8255 port C.
 ppi_pc1_on
         pha
@@ -15675,7 +15675,7 @@ ppi_pc1_on
         pla
         rts
 
-; --- ppi_pc1_off: Clear 8255 port C bit 1
+; --- ppi_pc1_off: Clear 8255 port C bit 1 (ALTMAP off)
 ; Clear bit 1 of 8255 port C.
 ppi_pc1_off
         pha
