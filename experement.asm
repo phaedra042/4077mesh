@@ -313,13 +313,54 @@ part_dir_track     = $9100         ; Per-partition current-directory track
 part_dir_sector    = $9200         ; Per-partition current-directory sector
 parity_tbl         = $9300         ; Parity helper table ($9300-$93FF)
 
+; ===========================================================================
+; PRINT SPOOLER (new code, not in the original v1.92)
+; Intercepts device 4 (printer) traffic on the main serial bus, stores it in the first type 6 (print
+; buffer) partition and, while the drive is idle, plays it back out of the aux port (VIA1 port A).
+; ===========================================================================
+sp_dev             = $04     ; device number intercepted (LISTEN = $20 + this)
+sp_ptr             = $72     ; ZP: pointer into the spool buffers ($72/$73)
+sp_zb              = $74     ; ZP: relative block number lo/hi ($74/$75)
+sp_t0              = $76     ; ZP: scratch
+sp_t1              = $79     ; ZP: scratch
+sp_t2              = $7A     ; ZP: scratch
+sp_wbuf            = $3800   ; 512 byte write buffer (the tail block)
+sp_rbuf            = $3A00   ; 512 byte read buffer (the head block when it is not the tail block)
+sp_hbuf            = $3C00   ; 512 byte header block image
+sp_stat            = $3E00   ; b7 ready, b6 write buffer dirty, b5 read buffer valid, b3 header dirty, b0 init tried
+sp_retry           = $3E01   ; 16 bit init retry counter
+sp_base            = $3E04   ; 24 bit absolute start block of the spool partition
+sp_size            = $3E07   ; partition size in 512 byte blocks
+sp_tblk            = $3E09   ; tail (write) block, relative to the partition
+sp_toff            = $3E0B   ; tail offset in the block (0-511)
+sp_hblk            = $3E0D   ; head (read) block
+sp_hoff            = $3E0F   ; head offset in the block
+sp_lsn             = $3E11   ; b7 set: this ATN burst addressed the spooler (device 4)
+sp_aux             = $3E12   ; b7 set: a LISTEN session is open on the aux port
+sp_rsa             = $3E13   ; secondary address of the aux session
+sp_dec             = $3E14   ; stream decoder state (0 data, 1 after $FF, 2 expecting SA, 3 expecting EOI byte)
+sp_rblk            = $3E15   ; block held in the read buffer
+sp_wd              = $3E17   ; idle flush delay counter
+sp_cnt             = $3E18   ; bytes left in this idle burst
+sp_eoi             = $3E19   ; EOI flag of the byte being sent
+sp_sav             = $3E1A   ; saved SCSI status
+aux_din            = $01     ; PA0 AUX DATA IN
+aux_dout           = $02     ; PA1 AUX DATA OUT
+aux_cin            = $04     ; PA2 AUX CLK IN
+aux_cout           = $08     ; PA3 AUX CLK OUT
+aux_atn            = $10     ; PA4 AUX ATN OUT
+sp_xs              = $3E1B   ; saved X in sp_put
+sp_sa              = $3E1C   ; secondary address byte being recorded
+sp_by              = $3E1D   ; byte being played
+sp_bo              = $3E1E   ; 16 bit back-off counter after a printer failure
+
 ;------------------------------------------------------------------------------
 ; The original file is a PRG whose two-byte load address is $2000; the image
 ; itself executes at $9400-$FFFF.  Assemble as a plain binary to reproduce the
 ; original file byte for byte (drop the !word line to get the bare image).
 
 ;------------------------------------------------------------------------------
-        !to "hdos_v1.92_symbolicv2.prg", plain
+        !to "hdos_v1.92_symbolic.prg", plain
 
 * = $93FE
         !word $2000                      ; PRG load address header of the original file
@@ -329,6 +370,12 @@ parity_tbl         = $9300         ; Parity helper table ($9300-$93FF)
 ; Start of the image ($9400).  The DOS begins with its copyright text; the
 ; first executable byte is the serial-bus ATN service at atn_service.
 ; ==========================================================================
+; ---------------------------------------------------------------------------
+; UNREFERENCED DATA ($93FE-$9449, 76 bytes)
+; The first two bytes ($2000) are only the PRG load address of the original file and are not part of the
+; ROM image. The text that follows is the copyright notice. No instruction or table ever reads it; it is
+; there so the notice shows up in a ROM dump. A second copy sits at copyright_msg_2 ($FEA0).
+; ---------------------------------------------------------------------------
 copyright_msg                           ; $9400
         !text "CMD HD DOS COPYRIGHT 1990 CREATIVE MICRO DESIGNS, INC. ALL RIGHTS RESERVED" ; $9400
 
@@ -347,7 +394,7 @@ atn_service
         and xfer_mode            ; clear fast-protocol (burst/Jiffy) bits from xfer_mode, keep b7 as set above
         sta xfer_mode
         lda #$00
-        sta par_mode             ; default to the serial bus; the parallel cable sets this when it sees its own ATN
+        jsr sp_atn_clear         ; SPOOLER: = STA par_mode (default to the serial bus) plus clearing the spooler flag
         lda bus_flags
         and #$3F                 ; ATN resets talker/listener: clear b7 (talk) and b6 (listen)
         sta bus_flags
@@ -390,8 +437,9 @@ atn_test_talk_addr
         lda #$80                 ; $80 = become talker
         bne atn_set_role
 atn_test_listen_addr
-        cmp listen_addr          ; is this LISTEN + our device number?
-        bne atn_test_secondary
+        jmp sp_atn_hook          ; SPOOLER: our own LISTEN, or device 4 when a print buffer is ready
+        nop
+atn_test_listen_ours
         lda #$40                 ; $40 = become listener
 atn_set_role
         ora bus_flags            ; set the role bit...
@@ -413,8 +461,9 @@ atn_test_secondary               ; not ours: maybe a secondary address ($60-$7F 
         sta cur_sa
         txa
         and #$F0                 ; high nibble tells open/close/data
-        cmp #$E0                 ; $E0 = CLOSE
-        bne atn_wait_atn_end     ; anything else (data/open) is handled later in the listen/talk handler
+        jmp sp_atn_sa            ; SPOOLER: record the SA for device 4, otherwise $E0 = CLOSE as before
+        nop
+atn_do_close
         cli
         jsr close_handler        ; CLOSE is done now, with interrupts enabled because it may take a while
         sei
@@ -439,7 +488,7 @@ atn_atn_released                 ; ATN has been released: turn the line around
         bpl atn_do_listen
         jsr burst_listen_start
 atn_do_listen
-        jsr jt_listen            ; receive the data bytes
+        jsr sp_listen_dispatch   ; SPOOLER: receive the data bytes (device 4 goes to the spooler)
         jmp atn_exit_to_idle
 atn_test_talker                  ; are we the talker (bit 7)?
         bit bus_flags
@@ -858,6 +907,7 @@ sr_mode_in
         plp
         rts
 
+; UNREACHABLE: 2 byte alternate entry (BCC to sr_mode_in), never used.
 ; --- sr_mode_in_alt: (unreferenced alternate entry of sr_mode_in)
 sr_mode_in_alt
         bcc sr_mode_in
@@ -2390,6 +2440,7 @@ write_block_error                ; something is wrong with the block number: job
 listen_rel_byte
         jmp rel_write_byte
 
+; UNREACHABLE: bare RTS stubs (listen_nop_a, listen_nop_b), not referenced by any table or branch.
 listen_nop_a                     ; empty entries (no byte written for this channel type)
         rts
 
@@ -4857,7 +4908,7 @@ cmd_mem
         bcs cmd_mem_check_user_signature
         rts                      ; ...so just return
 cmd_mem_check_user_signature
-        cmp #$06                 ; a jump to $06xx may be a "magic" program: compare against a signature
+        cmp #$06                 ; a jump to $0600 may be JiffyDOS's uploaded @L program: compare it against a signature
         bne cmd_mem_execute_at_address
         lda tmp_a                ; only if the address low byte is 0 ($0600)
         bne cmd_mem_execute_at_address
@@ -4868,7 +4919,7 @@ cmd_mem_compare_signature_loop
         bne cmd_mem_execute_at_address
         dey
         bpl cmd_mem_compare_signature_loop
-        jmp cmd_l_toggle_lock_flag ; signature matched: toggle the lock flag of a file (hidden hook, see cmd_l)
+        jmp cmd_l_toggle_lock_flag ; signature matched: this is JiffyDOS's @L (lock/unlock) upload, do the toggle ourselves
 cmd_mem_execute_at_address
         ldy #$00                 ; otherwise execute at the address
         lda #$45
@@ -4906,7 +4957,10 @@ cmd_mem_memory_write_loop        ; M-W: bytes start at cmd_buf+6
         cpy cmd_buf+5            ; count in cmd_buf+5
         bcc cmd_mem_memory_write_loop
         rts
-; 8 bytes the M-E check compares at $0608: LDX #$00 / STX $F9 / JSR $D586... (a known program).
+; 8 bytes the M-E check compares at $0608. They are part of the drive-side @L (lock/unlock file) program that
+; the JiffyDOS kernal uploads with M-W to $0600 and starts with M-E $0600 (JiffyDOS kernal $F398 and $F3BA):
+; the program is 1541 code (LDX #$00 / STX $F9 / JSR $D586 = a 1541 ROM routine), which the HD cannot run, so
+; it recognises the upload and does the lock toggle itself.
 memexec_signature
         !byte $06,$A2,$00,$86,$F9,$20,$86,$D5 ; $B125
 ; --- cmd_rename_misc: R- commands: R-P (rename a partition) and R-H (rename a directory header)
@@ -9195,6 +9249,13 @@ chan_get_no_limit
         inc buf_ptr_tbl,x
         rts
 
+; ---------------------------------------------------------------------------
+; UNREACHABLE CODE ($CF2A-$CF4F, 38 bytes), no caller and no table entry. No counterpart in CMD HD BOOTROM v2.80
+; and no reference from the JiffyDOS kernal.
+; Writes a byte and, when the buffer page is full, chains the next block and writes the old one. The write
+; paths that need this (the listen byte writers) already do the same steps themselves, so this looks like
+; an earlier version of that sequence that was left in the ROM.
+; ---------------------------------------------------------------------------
 ; --- chan_put_byte_next: Store a byte, allocate next block on overflow
 ; Store a byte; when the buffer page is full (Z) chain the next block and write the old one.
 chan_put_byte_next
@@ -9340,6 +9401,7 @@ calc_clear
         sta calc_c
         rts
 
+; UNREACHABLE: 3 byte helper that shifts the 24 bit value twice (JSR calc_shift1, then falls into it), never called.
 ; --- calc_shift2: Shift 24-bit value left twice
 calc_shift2
         jsr calc_shift1
@@ -10079,6 +10141,8 @@ rel_pos_finish
         jsr rel_set_ptr
         jmp rel_get_reload_pointer
 
+; UNREACHABLE CODE ($D47A-$D47E, 5 bytes): nothing jumps here, the live code raises error 51 itself.
+; Not referenced by CMD HD BOOTROM v2.80 or JiffyDOS either (too short to match by pattern).
 ; --- err_51_overflow: Error 51: overflow in record
 err_51_overflow
         lda #$51
@@ -10836,6 +10900,9 @@ issue_job_run_job                ; run the job through the jump table (so it can
         sta job_cmd_tmp
         jmp jt_do_job
 
+; UNREACHABLE CODE ($D957-$D95F, the two 5-byte entries job_read_x80 and job_write_x90): never called.
+; Not referenced by CMD HD BOOTROM v2.80 or JiffyDOS either.
+; Everything goes through job_run, which is all these two wrap.
 ; --- job_read_x80: Run read job on the current buffer
 ; Job $80 read or $90 write on the buffer in cur_buf_idx.
 job_read_x80
@@ -11366,6 +11433,8 @@ swap_bufs_wait_job
         tax
         jmp job_wait
 
+; UNREACHABLE CODE ($DC43-$DC47, 5 bytes): never referenced. Error 70 is raised directly where it is needed.
+; Not referenced by CMD HD BOOTROM v2.80 or JiffyDOS either.
 ; --- err_70_no_channel: Error 70: no channel
 ; Error 70 NO CHANNEL.
 err_70_no_channel
@@ -11536,6 +11605,11 @@ chan_cur_buf2_store_flags
         bit tmp_b
         rts
 
+; ---------------------------------------------------------------------------
+; UNREACHABLE CODE ($DD18-$DD35, 30 bytes): chan_has_buf and chan_set_buf have no callers (no counterpart in
+; CMD HD BOOTROM v2.80, no reference from JiffyDOS). The buffer
+; bookkeeping they would do is repeated inline elsewhere (alloc_chan, swap_chan_bufs).
+; ---------------------------------------------------------------------------
 ; --- chan_has_buf: Z set if the channel has no buffers
 ; Z = 1 if the channel has no buffer at all.
 chan_has_buf
@@ -12850,6 +12924,10 @@ burst_format_bad_param_status
         jmp burst_illegal_status
 burst_format_check_1581_params
         bmi burst_format_validate_params ; this branch is always taken (N set from BIT burst_mode)
+        ; ----- LOGICALLY DEAD CODE ($E642-$E668, 39 bytes including fmt_cmd and fmt_cmd_id) -----
+        ; The BMI above is always taken (it tests N, set by the BIT in the code before this routine), so the
+        ; code that follows can never run. It would copy "N0:CMD HD" and ",89" into the command buffer and call
+        ; the NEW command for a burst format. The text it reads (fmt_cmd, fmt_cmd_id) is dead with it.
         ldx #$00
 burst_format_build_new_command_unused ; (never reached) would build "N0:CMD HD,89" and format
         lda fmt_cmd,x
@@ -15456,6 +15534,18 @@ install_jump_copy_vector_loop
         plp
         rts
 
+; ---------------------------------------------------------------------------
+; REACTIVATED BY CMD HD BOOTROM v2.80
+; load_part_table, copy_part_entry and sys_read_check (with the 16 byte part_hdr_sig) are never called inside
+; this DOS image, but the boot ROM contains the same routines (same signature, same destination tables
+; $8200/$8300/$8600/$8700/$8A00/$8B00) and uses them during startup:
+;   load_part_table  = BOOTROM $DCB6, called from $D0BC and $E547
+;   copy_part_entry  = BOOTROM $DCE7, called from its load_part_table
+;   sys_read_check   = BOOTROM $DD4E, called from $D0C7, $D134 and $E697
+; The boot ROM reads the partition table and the configuration page into the protected RAM, then hands over
+; to the RAM resident DOS by switching the memory map (stub copied to $0100: ALTMAP on, ROMOS off,
+; JMP ($FFFC)). The copies left in this image are therefore only used when the boot ROM runs them.
+; ---------------------------------------------------------------------------
 ; --- load_part_table: Read the partition table from the system partition
 ; Read the partition table from the system partition: 32 blocks of 8 entries each.
 load_part_table
@@ -15692,6 +15782,9 @@ cfg_set0
         sta cfg_0
         jmp ctl_latch_restore
 
+; UNREACHABLE CODE ($F77A-$F78B, 18 bytes): cfg_set_device and cfg_set2 write the two device number bytes
+; of the configuration. Only the other cfg_set_* writers are used. CMD HD BOOTROM v2.80 has the same two
+; routines ($DE00 and $DE09) and does not call them either.
 ; --- cfg_set_device: Write the device number (protected RAM)
 cfg_set_device
         jsr ctl_latch_save_unlock
@@ -15849,8 +15942,8 @@ idle_loop_poll_for_atn
 idle_loop_atn_detected
         jmp jt_atn_service       ; start the ATN service
 idle_loop_update_activity_led
-        sei
-        ldy #$00
+        jmp sp_idle_hook         ; SPOOLER idle work, then the original SEI / LDY #$00
+idle_loop_count_start
         ldx #$0E                 ; count open channels: SA 0-14
 idle_loop_count_channels_loop
         lda sa_chan,x
@@ -15930,8 +16023,755 @@ irq_exit
 ; Free space between the code and the jump table.
 ; Unused space (zero filled) up to the vector tables.
 ; --------------------------------------------------------------------------
+; ---------------------------------------------------------------------------
+; PRINT SPOOLER ($F8F0 up, in what was 1296 bytes of $00 padding). See the notes at sp_atn_clear.
+; ---------------------------------------------------------------------------
 free_space                              ; $F8F0
-        !fill 1296, $00                 ; $F8F0-$FDFF
+; ---------------------------------------------------------------------------
+; PRINT SPOOLER: how it fits together
+;   host (computer) --serial bus--> LISTEN 4 is answered here --> stream stored in the first type 6
+;   partition (ring of 512 byte blocks, block 0 = header) --> played out of the aux port while idle.
+; Hooks in the original code (each marked SPOOLER in the source):
+;   atn_service          JSR sp_atn_clear      replaces STA par_mode (also clears the "spooler addressed" flag)
+;   atn_test_listen_addr JMP sp_atn_hook       replaces CMP listen_addr / BNE (device 4 is accepted here)
+;   atn_test_secondary   JMP sp_atn_sa         replaces CMP #$E0 / BNE (secondary address recorded for device 4)
+;   atn_do_listen        JSR sp_listen_dispatch replaces JSR jt_listen (device 4 data goes to sp_listen)
+;   idle_loop            JMP sp_idle_hook      replaces SEI / LDY #$00 (idle work: init, flush, play out)
+; Stream format in the ring ($FF is the escape byte):
+;   plain byte                data byte, $FF is stored as $FF $00
+;   $FF $01 <sa>              a LISTEN session starts with this secondary address byte ($6x data, $Fx OPEN, $Ex CLOSE)
+;   $FF $03 <byte>            this data byte carried EOI
+; Header block (block 0): "SPL1", tail block (16 bit), tail offset (16 bit), head block, head offset, session SA.
+; ---------------------------------------------------------------------------
+; ---------------------------------------------------------------------------
+; Spooler hooks entered from patches in the original code
+; ---------------------------------------------------------------------------
+; atn_service clears the "spooler addressed" flag together with par_mode (A = 0 here)
+sp_atn_clear
+        sta par_mode
+        sta sp_lsn
+        rts
+
+; replaces "CMP listen_addr / BNE atn_test_secondary": our own LISTEN first, then device 4
+sp_atn_hook
+        cmp listen_addr
+        bne sp_atn_chk4
+        jmp atn_test_listen_ours
+sp_atn_chk4
+        cmp #$20+sp_dev
+        bne sp_atn_other
+        bit sp_stat              ; only answer when a print buffer partition is ready
+        bpl sp_atn_other
+        bit drive_flags          ; and the drive is not write protected (we could not store the data)
+        bmi sp_atn_other
+        lda #$80
+        sta sp_lsn               ; this burst is for the spooler
+        lda #$40                 ; become a listener, DATA stays low so the host sees a device
+        jmp atn_set_role
+sp_atn_other
+        jmp atn_test_secondary
+
+; replaces "CMP #$E0 / BNE atn_wait_atn_end" after a secondary address (A = high nibble, X = raw byte)
+sp_atn_sa
+        bit sp_lsn
+        bmi sp_atn_sa_spool
+        cmp #$E0
+        bne sp_atn_sa_plain
+        jmp atn_do_close
+sp_atn_sa_plain
+        jmp atn_wait_atn_end
+sp_atn_sa_spool
+        pha
+        stx sp_sa
+        lda #$FF                 ; stream event: $FF $01 <secondary address byte>
+        jsr sp_put
+        lda #$01
+        jsr sp_put
+        lda sp_sa
+        jsr sp_put
+        pla
+        cmp #$E0                 ; a CLOSE has no data phase, more ATN bytes (UNLISTEN) may follow
+        bne sp_atn_sa_plain
+        jmp atn_more_atn_check
+
+; replaces "JSR jt_listen" in atn_do_listen
+sp_listen_dispatch
+        bit sp_lsn
+        bpl sp_listen_plain
+        jmp sp_listen
+sp_listen_plain
+        jmp jt_listen
+
+; Receive data for device 4 and store it until the host stops (ATN aborts through iec_listen_byte)
+sp_listen
+        lda #$80
+        sta eoi_flag
+        jsr iec_listen_byte
+        bit eoi_flag
+        bmi sp_listen_plain_byte
+        pha                      ; EOI: $FF $03 <byte>
+        lda #$FF
+        jsr sp_put
+        lda #$03
+        jsr sp_put
+        pla
+        jsr sp_put
+        jmp sp_listen
+sp_listen_plain_byte
+        cmp #$FF                 ; a literal $FF is stored as $FF $00
+        bne sp_listen_store
+        jsr sp_put
+        lda #$00
+sp_listen_store
+        jsr sp_put
+        jmp sp_listen
+
+; replaces the start of the activity lamp code in idle_loop; does the spooler's idle work first
+sp_idle_hook
+        jsr sp_idle
+        sei
+        ldy #$00
+        jmp idle_loop_count_start
+
+; ---------------------------------------------------------------------------
+; Stream buffer: append, advance, read
+; ---------------------------------------------------------------------------
+; Append A to the write buffer (tail). Keeps X.
+sp_put
+        stx sp_xs
+        pha
+        lda sp_toff+1
+        cmp #$02                 ; a full block is left over (an earlier advance was interrupted)
+        bne sp_put_store
+        jsr sp_advance
+sp_put_store
+        lda sp_toff
+        sta sp_ptr
+        lda sp_toff+1
+        clc
+        adc #>sp_wbuf
+        sta sp_ptr+1
+        pla
+        ldy #$00
+        sta (sp_ptr),y
+        inc sp_toff
+        bne sp_put_dirty
+        inc sp_toff+1
+sp_put_dirty
+        lda sp_stat
+        ora #$40                 ; write buffer dirty
+        sta sp_stat
+        lda #$00
+        sta sp_wd
+        lda sp_toff+1
+        cmp #$02                 ; 512 bytes: the block is full
+        bne sp_put_done
+        jsr sp_advance
+sp_put_done
+        ldx sp_xs
+        rts
+
+; The write buffer is full: write it, move the tail to the next block (waiting while the ring is full)
+sp_advance
+        lda sp_tblk
+        sta sp_zb
+        lda sp_tblk+1
+        sta sp_zb+1
+        lda #$2A
+        ldx #>sp_wbuf
+        jsr sp_rw                ; write the full block to its place
+sp_advance_wait
+        lda sp_tblk
+        sta sp_zb
+        lda sp_tblk+1
+        sta sp_zb+1
+        jsr sp_next              ; sp_zb = next block (recomputed: sp_tx below changes sp_zb)
+        lda sp_zb
+        cmp sp_hblk
+        bne sp_advance_ok
+        lda sp_zb+1
+        cmp sp_hblk+1
+        bne sp_advance_ok
+        jsr sp_tx                ; ring full: play data out to make room
+        jmp sp_advance_wait
+sp_advance_ok
+        lda sp_zb
+        sta sp_tblk
+        lda sp_zb+1
+        sta sp_tblk+1
+        lda #$00
+        sta sp_toff
+        sta sp_toff+1
+        lda sp_stat
+        and #$BF                 ; write buffer is clean
+        ora #$08                 ; header needs saving
+        sta sp_stat
+        jmp sp_save
+
+; sp_zb = next block after sp_zb, wrapping from the end of the partition to block 1
+sp_next
+        inc sp_zb
+        bne sp_next_chk
+        inc sp_zb+1
+sp_next_chk
+        lda sp_zb+1
+        cmp sp_size+1
+        bcc sp_next_done
+        bne sp_next_wrap
+        lda sp_zb
+        cmp sp_size
+        bcc sp_next_done
+sp_next_wrap
+        lda #$01
+        sta sp_zb
+        lda #$00
+        sta sp_zb+1
+sp_next_done
+        rts
+
+; Z = 1 when the head has caught up with the tail (nothing to play)
+sp_empty
+        ldx #$03
+sp_empty_loop
+        lda sp_tblk,x
+        cmp sp_hblk,x
+        bne sp_empty_done
+        dex
+        bpl sp_empty_loop
+        lda #$00                 ; all four words equal: Z = 1
+sp_empty_done
+        rts
+
+; A = byte at the head of the stream (not consumed). C = 1 if the block could not be read.
+sp_peek
+        lda sp_hblk
+        cmp sp_tblk
+        bne sp_peek_disk
+        lda sp_hblk+1
+        cmp sp_tblk+1
+        beq sp_peek_ptr          ; head is in the tail block: use the write buffer
+sp_peek_disk
+        lda sp_stat
+        and #$20
+        beq sp_peek_read         ; read buffer holds nothing
+        lda sp_rblk
+        cmp sp_hblk
+        bne sp_peek_read
+        lda sp_rblk+1
+        cmp sp_hblk+1
+        beq sp_peek_ptr_r
+sp_peek_read
+        lda sp_hblk
+        sta sp_zb
+        lda sp_hblk+1
+        sta sp_zb+1
+        lda #$28
+        ldx #>sp_rbuf
+        jsr sp_rw
+        bne sp_peek_fail
+        lda sp_hblk
+        sta sp_rblk
+        lda sp_hblk+1
+        sta sp_rblk+1
+        lda sp_stat
+        ora #$20
+        sta sp_stat
+sp_peek_ptr_r
+        lda #>sp_rbuf
+        bne sp_peek_set
+sp_peek_ptr
+        lda #>sp_wbuf
+sp_peek_set
+        clc
+        adc sp_hoff+1
+        sta sp_ptr+1
+        lda sp_hoff
+        sta sp_ptr
+        ldy #$00
+        lda (sp_ptr),y
+        clc
+        rts
+sp_peek_fail
+        sec
+        rts
+
+; Consume one stream byte
+sp_adv
+        inc sp_hoff
+        bne sp_adv_chk
+        inc sp_hoff+1
+sp_adv_chk
+        lda sp_hoff+1
+        cmp #$02
+        bne sp_adv_done
+        lda #$00                 ; end of the block: move to the next one
+        sta sp_hoff
+        sta sp_hoff+1
+        lda sp_hblk
+        sta sp_zb
+        lda sp_hblk+1
+        sta sp_zb+1
+        jsr sp_next
+        lda sp_zb
+        sta sp_hblk
+        lda sp_zb+1
+        sta sp_hblk+1
+        lda sp_stat
+        and #$DF                 ; read buffer no longer matches
+        ora #$08
+        sta sp_stat
+sp_adv_done
+        rts
+
+; ---------------------------------------------------------------------------
+; Disk access: one 512 byte block of the spool partition
+; ---------------------------------------------------------------------------
+; A = $28 read / $2A write, X = high byte of the buffer, sp_zb = block relative to the partition.
+; Returns A = SCSI status (Z = 1: good). Runs with interrupts off like the DOS jobs.
+sp_rw
+        php
+        sei
+        pha
+        stx sp_t0
+        clc
+        lda sp_zb
+        adc sp_base
+        sta lba_b0
+        lda sp_zb+1
+        adc sp_base+1
+        sta lba_b1
+        lda #$00
+        adc sp_base+2
+        sta lba_b2
+        lda #$1D                 ; job scratch slot (only its lba fields are used)
+        sta job_buf_no
+        jsr find_lun             ; absolute block -> SCSI target, unit and block
+        bcs sp_rw_fail
+        pla
+        ldy #$01                 ; one block
+        jsr scsi_cdb_lba
+        lda #$00
+        sta buf_ptr_b
+        lda sp_t0
+        sta buf_ptr_b_hi
+        jsr scsi_issue_cdb
+        sta sp_sav
+        plp
+        lda sp_sav
+        rts
+sp_rw_fail
+        pla
+        lda #$C0
+        sta sp_sav
+        plp
+        lda sp_sav
+        rts
+
+; Write the header block: signature "SPL1", tail block/offset, head block/offset, current session SA
+sp_save
+        ldx #$03
+sp_save_sig
+        lda sp_sig,x
+        sta sp_hbuf,x
+        dex
+        bpl sp_save_sig
+        ldx #$07
+sp_save_ptr
+        lda sp_tblk,x
+        sta sp_hbuf+4,x
+        dex
+        bpl sp_save_ptr
+        lda sp_rsa               ; the secondary address of the session in progress
+        sta sp_hbuf+12
+        lda #$00
+        sta sp_zb
+        sta sp_zb+1
+        lda #$2A
+        ldx #>sp_hbuf
+        jsr sp_rw
+        php
+        lda sp_stat
+        and #$F7
+        sta sp_stat
+        plp
+        rts
+sp_sig
+        !text "SPL1"
+
+; Write out the partial tail block and the header
+sp_flush
+        lda sp_stat
+        and #$40
+        beq sp_flush_hdr
+        lda sp_tblk
+        sta sp_zb
+        lda sp_tblk+1
+        sta sp_zb+1
+        lda #$2A
+        ldx #>sp_wbuf
+        jsr sp_rw
+        lda sp_stat
+        and #$BF
+        sta sp_stat
+sp_flush_hdr
+        jmp sp_save
+
+; ---------------------------------------------------------------------------
+; Start up: find the first type 6 partition, read or create its header
+; ---------------------------------------------------------------------------
+sp_init
+        lda sp_stat
+        ora #$01                 ; tried once
+        sta sp_stat
+        ldx #$01
+sp_init_scan
+        lda part_type,x
+        cmp #$06
+        beq sp_init_found
+        inx
+        cpx #$FF
+        bne sp_init_scan
+        sec
+        rts
+sp_init_found
+        lda part_start_lo,x
+        sta sp_base
+        lda part_start_mid,x
+        sta sp_base+1
+        lda part_start_hi,x
+        sta sp_base+2
+        lda part_size_lo,x
+        sta sp_size
+        lda part_size_hi,x
+        sta sp_size+1
+        bne sp_init_size_ok
+        lda sp_size
+        cmp #$04                 ; header + at least three data blocks
+        bcc sp_init_fail
+sp_init_size_ok
+        lda #$00
+        sta sp_zb
+        sta sp_zb+1
+        lda #$28
+        ldx #>sp_hbuf
+        jsr sp_rw                ; read the header block
+        bne sp_init_fail
+        ldx #$03
+sp_init_chk_sig
+        lda sp_hbuf,x
+        cmp sp_sig,x
+        bne sp_init_new
+        dex
+        bpl sp_init_chk_sig
+        ldx #$07
+sp_init_copy
+        lda sp_hbuf+4,x
+        sta sp_tblk,x
+        dex
+        bpl sp_init_copy
+        jsr sp_valid             ; are the pointers sane?
+        bcs sp_init_new
+        lda sp_hbuf+12
+        sta sp_rsa
+        jmp sp_init_load
+sp_init_new
+        ldx #$07                 ; empty ring: head = tail = block 1, offset 0
+        lda #$00
+sp_init_clear
+        sta sp_tblk,x
+        dex
+        bpl sp_init_clear
+        lda #$01
+        sta sp_tblk
+        sta sp_hblk
+        jsr sp_save
+        bne sp_init_fail
+sp_init_load
+        lda sp_toff
+        ora sp_toff+1
+        beq sp_init_ready        ; tail at a block start: nothing to read back
+        lda sp_tblk              ; reload the partial tail block
+        sta sp_zb
+        lda sp_tblk+1
+        sta sp_zb+1
+        lda #$28
+        ldx #>sp_wbuf
+        jsr sp_rw
+        bne sp_init_fail
+sp_init_ready
+        lda #$00
+        sta sp_dec
+        sta sp_aux
+        jsr aux_idle             ; aux lines released
+        lda #$80                 ; ready (clears the other bits, keeps nothing else)
+        sta sp_stat
+        clc
+        rts
+sp_init_fail
+        sec
+        rts
+
+; C = 1 when a pointer is out of range: block 1..size-1 and offset below 512, for the tail (X=0) and the head (X=4)
+sp_valid
+        ldx #$00
+sp_valid_loop
+        lda sp_tblk,x
+        ora sp_tblk+1,x
+        beq sp_valid_bad         ; block 0 is the header
+        lda sp_tblk+3,x
+        cmp #$02
+        bcs sp_valid_bad         ; offset 512 or more
+        lda sp_tblk+1,x
+        cmp sp_size+1
+        bcc sp_valid_next
+        bne sp_valid_bad
+        lda sp_tblk,x
+        cmp sp_size
+        bcs sp_valid_bad
+sp_valid_next
+        txa
+        eor #$04
+        tax
+        bne sp_valid_loop        ; X = 4 now: check the head too
+        clc
+        rts
+sp_valid_bad
+        sec
+        rts
+
+; ---------------------------------------------------------------------------
+; Idle work, called from the idle loop
+; ---------------------------------------------------------------------------
+sp_idle
+        bit sp_stat
+        bmi sp_idle_ready
+        lda sp_stat
+        and #$01
+        beq sp_idle_try          ; first time: try straight away
+        inc sp_retry
+        bne sp_idle_ret
+        inc sp_retry+1
+        bne sp_idle_ret
+sp_idle_try
+        jmp sp_init
+sp_idle_ret
+        rts
+sp_idle_ready
+        lda sp_stat
+        and #$48                 ; write buffer dirty or header out of date?
+        beq sp_idle_play
+        inc sp_wd                ; wait about 256 idle passes without new data, then write it out
+        bne sp_idle_play
+        jsr sp_flush
+sp_idle_play
+        jsr sp_empty
+        beq sp_idle_empty
+        lda sp_bo                ; printer failed recently: wait
+        ora sp_bo+1
+        beq sp_idle_go
+        lda sp_bo
+        bne sp_idle_bo_lo
+        dec sp_bo+1
+sp_idle_bo_lo
+        dec sp_bo
+        rts
+sp_idle_go
+        jmp sp_tx
+sp_idle_empty
+        bit sp_aux
+        bpl sp_idle_ret
+        jsr aux_unlisten         ; nothing left to print: end the aux session
+        lda #$00
+        sta sp_aux
+        rts
+
+; ---------------------------------------------------------------------------
+; Play the stream out of the aux port
+; ---------------------------------------------------------------------------
+; Send up to 16 stream bytes. Stops early when the queue is empty or the printer does not answer.
+sp_tx
+        lda #$10
+        sta sp_cnt
+sp_tx_loop
+        jsr sp_empty
+        beq sp_tx_done
+        jsr sp_tx_one
+        bcs sp_tx_done
+        dec sp_cnt
+        bne sp_tx_loop
+sp_tx_done
+        rts
+
+; Handle one stream byte. C = 1 if it could not be played (nothing consumed).
+sp_tx_one
+        jsr sp_peek
+        bcs sp_tx_one_fail
+        ldx sp_dec
+        stx sp_t2
+        ldy #$00                 ; Y = decoder state after this byte
+        cpx #$02
+        beq sp_tx_session
+        cpx #$03
+        beq sp_tx_eoi
+        cpx #$01
+        beq sp_tx_esc
+        cmp #$FF                 ; state 0: $FF starts an event
+        bne sp_tx_data
+        ldy #$01
+        bne sp_tx_commit
+sp_tx_esc
+        cmp #$00                 ; $FF $00 = literal $FF
+        bne sp_tx_esc1
+        lda #$FF
+        bne sp_tx_data
+sp_tx_esc1
+        cmp #$01                 ; $FF $01 = session start, SA byte follows
+        bne sp_tx_esc3
+        ldy #$02
+        bne sp_tx_commit
+sp_tx_esc3
+        cmp #$03                 ; $FF $03 = next byte carries EOI
+        bne sp_tx_commit         ; anything else: ignore
+        ldy #$03
+        bne sp_tx_commit
+sp_tx_data
+        ldx #$00
+        stx sp_eoi
+        beq sp_tx_send
+sp_tx_eoi
+        ldx #$01
+        stx sp_eoi
+sp_tx_send
+        jsr sp_aux_data
+        bcs sp_tx_one_fail
+        ldy #$00
+sp_tx_commit
+        sty sp_dec
+        jsr sp_adv
+        clc
+        rts
+sp_tx_session
+        jsr sp_aux_session
+        bcs sp_tx_one_fail
+        ldy #$00
+        beq sp_tx_commit
+sp_tx_one_fail
+        lda #$00                 ; the aux session is gone, do not retry for a while
+        sta sp_aux
+        sta sp_bo
+        lda #$04
+        sta sp_bo+1
+        sec
+        rts
+
+; Send A to the printer (sp_eoi = 1: with EOI), opening the aux session first if needed. C = 1 on failure.
+sp_aux_data
+        sta sp_by
+        bit sp_aux
+        bmi sp_aux_data_send
+        jsr aux_open_session
+        bcs sp_aux_data_fail
+sp_aux_data_send
+        lda sp_by
+        jmp aux_send
+sp_aux_data_fail
+        rts
+
+; A = secondary address byte from the stream. $6x data sessions open lazily, $Fx OPEN opens now
+; and stays open for the file name, $Ex CLOSE is sent at once.
+sp_aux_session
+        sta sp_by
+        bit sp_aux
+        bpl sp_aux_session_new
+        jsr aux_unlisten         ; end the previous session
+        lda #$00
+        sta sp_aux
+sp_aux_session_new
+        lda sp_by
+        sta sp_rsa
+        cmp #$E0
+        bcc sp_aux_session_ok    ; data channel: opened when the first byte comes
+        jsr aux_open_session
+        bcs sp_aux_session_fail
+        lda sp_rsa
+        cmp #$F0
+        bcs sp_aux_session_ok    ; OPEN: leave it open for the name
+        jsr aux_unlisten         ; CLOSE: finished
+        lda #$00
+        sta sp_aux
+sp_aux_session_ok
+        clc
+        rts
+sp_aux_session_fail
+        sec
+        rts
+
+; ---------------------------------------------------------------------------
+; Aux port as a serial bus controller (VIA1 port A)
+; ASSUMPTIONS TO CHECK ON THE HARDWARE (schematic HD201300): the drivers are inverting, so a 1 in PA1
+; (DATA OUT) or PA3 (CLK OUT) pulls that line low; PA4 (AUX ATN OUT) is active low; an input bit
+; PA0 / PA2 reads 1 while that line is low. If any of this is the other way round, change aux_on/aux_off
+; at the call sites (the ATN lines are the only ones that use them the "wrong" way round).
+; ---------------------------------------------------------------------------
+; A = line mask: drive those outputs high / low
+aux_on
+        ora via1_pra_nh
+        sta via1_pra_nh
+        rts
+aux_off
+        eor #$FF
+        and via1_pra_nh
+        sta via1_pra_nh
+        rts
+
+; All aux lines released (DATA and CLK low = released, ATN high = released)
+aux_idle
+        lda #aux_dout+aux_cout
+        jsr aux_off
+        lda #aux_atn
+        jmp aux_on
+
+; Short delay between line changes (about 50 us at 2 MHz)
+aux_dly
+        ldx #$14
+aux_dly_loop
+        dex
+        bne aux_dly_loop
+        rts
+
+
+; LISTEN to the printer and send the secondary address in sp_rsa. C = 1 if nobody answers.
+aux_open_session
+        lda #aux_cout
+        jsr aux_on               ; CLK first, so no device sees a released CLK while ATN is asserted
+        lda #aux_atn
+        jsr aux_off              ; ATN asserted (active low)
+        lda #aux_dout
+        jsr aux_off
+        ldx #$08
+        lda #$01
+        jsr aux_wait             ; a device pulls DATA low when it is there
+        bcs aux_open_fail
+        lda #$00
+        sta sp_eoi
+        lda #$20+sp_dev
+        jsr aux_send
+        bcs aux_open_fail
+        lda sp_rsa
+        jsr aux_send
+        bcs aux_open_fail
+        lda #aux_atn
+        jsr aux_on               ; ATN released, we are the talker now
+        lda #$80
+        sta sp_aux
+        clc
+        rts
+aux_open_fail
+        jsr aux_idle
+        sec
+        rts
+
+        !fill $FE00-*, $00              ; rest of the padding up to the jump table page
 
 ; --------------------------------------------------------------------------
 ; Default contents of the jump table at $FF00 (copied by install_jump_table): the DOS commands
@@ -15973,12 +16813,62 @@ jump_table_defaults                     ; $FE00
         !word job_to_block                  ; $FE38
         !word cmd_l                  ; $FE3A
         !word cmd_w                  ; $FE3C
+; ---------------------------------------------------------------------------
+; PRINT SPOOLER, part 2 ($FE3E-$FE9F): aux_wait and aux_unlisten. The rest of this region is still $00.
+; ---------------------------------------------------------------------------
 free_space_2                            ; $FE3E
-        !fill 98, $00                   ; $FE3E-$FE9F
+; Wait for DATA to be released (A = 0) or asserted (A = 1); X = timeout in units of 256 passes.
+; The host's ATN always wins: the aux lines are released and the ATN service runs.
+; Returns C = 1 on timeout.
+aux_wait
+        sta sp_t2
+        ldy #$00
+aux_wait_loop
+        bit via1_prb
+        bmi aux_wait_atn
+        lda via1_pra_nh
+        and #aux_din
+        cmp sp_t2
+        beq aux_wait_ok
+        iny
+        bne aux_wait_loop
+        dex
+        bne aux_wait_loop
+        sec
+        rts
+aux_wait_ok
+        clc
+        rts
+aux_wait_atn
+        jsr aux_idle
+        lda #$00
+        sta sp_aux
+        jmp jt_atn_service
+
+; UNLISTEN
+aux_unlisten
+        lda #aux_cout
+        jsr aux_on               ; CLK first, so no device sees a released CLK while ATN is asserted
+        lda #aux_atn
+        jsr aux_off              ; ATN asserted (active low)
+        lda #aux_dout
+        jsr aux_off
+        lda #$00
+        sta sp_eoi
+        lda #$3F
+        jsr aux_send
+        jmp aux_idle
+        !fill $FEA0-*, $00
 
 ; Second copy of the copyright text (not referenced by code).
+; ---------------------------------------------------------------------------
+; UNREFERENCED DATA ($FEA0-$FEE9, 74 bytes): the copyright notice again, never read by any code.
+; ---------------------------------------------------------------------------
 copyright_msg_2                         ; $FEA0
         !text "CMD HD DOS COPYRIGHT 1990 CREATIVE MICRO DESIGNS, INC. ALL RIGHTS RESERVED" ; $FEA0
+; ---------------------------------------------------------------------------
+; UNUSED SPACE ($FEEA-$FEFF, 22 bytes of $00) up to the start of the jump table page.
+; ---------------------------------------------------------------------------
 free_space_3                            ; $FEEA
         !fill 22, $00                   ; $FEEA-$FEFF
 
@@ -16051,8 +16941,65 @@ jt_cmd_l                                ; $FF57
         jmp cmd_l ; 'L'
 jt_cmd_w                                ; $FF5A
         jmp cmd_w ; 'W'
+; ---------------------------------------------------------------------------
+; PRINT SPOOLER, part 3 ($FF5D-$FFF9): aux_send. The rest of this region is still $00, up to the hardware vectors.
+; ---------------------------------------------------------------------------
 free_space_4                            ; $FF5D
-        !fill 157, $00                  ; $FF5D-$FFF9
+; Send the byte A (sp_eoi = 1: last byte). C = 1 if the printer did not take it.
+aux_send
+        sta sp_t1
+        lda #aux_cout
+        jsr aux_off              ; ready to send
+        ldx #$00
+        lda #$00
+        jsr aux_wait             ; wait until the listener is ready (DATA released)
+        bcs aux_send_fail
+        lda sp_eoi
+        beq aux_send_bits
+        ldx #$00                 ; EOI: the listener answers by pulsing DATA low and high
+        lda #$01
+        jsr aux_wait
+        bcs aux_send_fail
+        ldx #$00
+        lda #$00
+        jsr aux_wait
+        bcs aux_send_fail
+aux_send_bits
+        lda #aux_cout
+        jsr aux_on
+        ldy #$08
+aux_send_bit
+        lsr sp_t1
+        bcs aux_send_one
+        lda #aux_dout
+        jsr aux_on               ; bit 0: DATA low
+        jmp aux_send_clock
+aux_send_one
+        lda #aux_dout
+        jsr aux_off              ; bit 1: DATA high
+aux_send_clock
+        jsr aux_dly              ; setup
+        lda #aux_cout
+        jsr aux_off              ; CLK high: bit is valid
+        jsr aux_dly              ; hold
+        lda #aux_cout
+        jsr aux_on
+        dey
+        bne aux_send_bit
+        lda #aux_dout
+        jsr aux_off
+        ldx #$04
+        lda #$01
+        jsr aux_wait             ; the listener answers with DATA low
+        bcs aux_send_fail
+        clc
+        rts
+aux_send_fail
+        jsr aux_idle
+        sec
+        rts
+
+        !fill $FFFA-*, $00
 
 ; --------------------------------------------------------------------------
 ; 6502 hardware vectors
