@@ -319,7 +319,7 @@ parity_tbl         = $9300         ; Parity helper table ($9300-$93FF)
 ; original file byte for byte (drop the !word line to get the bare image).
 
 ;------------------------------------------------------------------------------
-        !to "hdos_v1.92_symbolicv2.prg", plain
+        !to "hdos_v1.92_symbolic.prg", plain
 
 * = $93FE
         !word $2000                      ; PRG load address header of the original file
@@ -329,6 +329,12 @@ parity_tbl         = $9300         ; Parity helper table ($9300-$93FF)
 ; Start of the image ($9400).  The DOS begins with its copyright text; the
 ; first executable byte is the serial-bus ATN service at atn_service.
 ; ==========================================================================
+; ---------------------------------------------------------------------------
+; UNREFERENCED DATA ($93FE-$9449, 76 bytes)
+; The first two bytes ($2000) are only the PRG load address of the original file and are not part of the
+; ROM image. The text that follows is the copyright notice. No instruction or table ever reads it; it is
+; there so the notice shows up in a ROM dump. A second copy sits at copyright_msg_2 ($FEA0).
+; ---------------------------------------------------------------------------
 copyright_msg                           ; $9400
         !text "CMD HD DOS COPYRIGHT 1990 CREATIVE MICRO DESIGNS, INC. ALL RIGHTS RESERVED" ; $9400
 
@@ -858,6 +864,7 @@ sr_mode_in
         plp
         rts
 
+; UNREACHABLE: 2 byte alternate entry (BCC to sr_mode_in), never used.
 ; --- sr_mode_in_alt: (unreferenced alternate entry of sr_mode_in)
 sr_mode_in_alt
         bcc sr_mode_in
@@ -2390,6 +2397,7 @@ write_block_error                ; something is wrong with the block number: job
 listen_rel_byte
         jmp rel_write_byte
 
+; UNREACHABLE: bare RTS stubs (listen_nop_a, listen_nop_b), not referenced by any table or branch.
 listen_nop_a                     ; empty entries (no byte written for this channel type)
         rts
 
@@ -4857,7 +4865,7 @@ cmd_mem
         bcs cmd_mem_check_user_signature
         rts                      ; ...so just return
 cmd_mem_check_user_signature
-        cmp #$06                 ; a jump to $06xx may be a "magic" program: compare against a signature
+        cmp #$06                 ; a jump to $0600 may be JiffyDOS's uploaded @L program: compare it against a signature
         bne cmd_mem_execute_at_address
         lda tmp_a                ; only if the address low byte is 0 ($0600)
         bne cmd_mem_execute_at_address
@@ -4868,7 +4876,7 @@ cmd_mem_compare_signature_loop
         bne cmd_mem_execute_at_address
         dey
         bpl cmd_mem_compare_signature_loop
-        jmp cmd_l_toggle_lock_flag ; signature matched: toggle the lock flag of a file (hidden hook, see cmd_l)
+        jmp cmd_l_toggle_lock_flag ; signature matched: this is JiffyDOS's @L (lock/unlock) upload, do the toggle ourselves
 cmd_mem_execute_at_address
         ldy #$00                 ; otherwise execute at the address
         lda #$45
@@ -4906,7 +4914,10 @@ cmd_mem_memory_write_loop        ; M-W: bytes start at cmd_buf+6
         cpy cmd_buf+5            ; count in cmd_buf+5
         bcc cmd_mem_memory_write_loop
         rts
-; 8 bytes the M-E check compares at $0608: LDX #$00 / STX $F9 / JSR $D586... (a known program).
+; 8 bytes the M-E check compares at $0608. They are part of the drive-side @L (lock/unlock file) program that
+; the JiffyDOS kernal uploads with M-W to $0600 and starts with M-E $0600 (JiffyDOS kernal $F398 and $F3BA):
+; the program is 1541 code (LDX #$00 / STX $F9 / JSR $D586 = a 1541 ROM routine), which the HD cannot run, so
+; it recognises the upload and does the lock toggle itself.
 memexec_signature
         !byte $06,$A2,$00,$86,$F9,$20,$86,$D5 ; $B125
 ; --- cmd_rename_misc: R- commands: R-P (rename a partition) and R-H (rename a directory header)
@@ -9195,6 +9206,13 @@ chan_get_no_limit
         inc buf_ptr_tbl,x
         rts
 
+; ---------------------------------------------------------------------------
+; UNREACHABLE CODE ($CF2A-$CF4F, 38 bytes), no caller and no table entry. No counterpart in CMD HD BOOTROM v2.80
+; and no reference from the JiffyDOS kernal.
+; Writes a byte and, when the buffer page is full, chains the next block and writes the old one. The write
+; paths that need this (the listen byte writers) already do the same steps themselves, so this looks like
+; an earlier version of that sequence that was left in the ROM.
+; ---------------------------------------------------------------------------
 ; --- chan_put_byte_next: Store a byte, allocate next block on overflow
 ; Store a byte; when the buffer page is full (Z) chain the next block and write the old one.
 chan_put_byte_next
@@ -9340,6 +9358,7 @@ calc_clear
         sta calc_c
         rts
 
+; UNREACHABLE: 3 byte helper that shifts the 24 bit value twice (JSR calc_shift1, then falls into it), never called.
 ; --- calc_shift2: Shift 24-bit value left twice
 calc_shift2
         jsr calc_shift1
@@ -10079,6 +10098,8 @@ rel_pos_finish
         jsr rel_set_ptr
         jmp rel_get_reload_pointer
 
+; UNREACHABLE CODE ($D47A-$D47E, 5 bytes): nothing jumps here, the live code raises error 51 itself.
+; Not referenced by CMD HD BOOTROM v2.80 or JiffyDOS either (too short to match by pattern).
 ; --- err_51_overflow: Error 51: overflow in record
 err_51_overflow
         lda #$51
@@ -10836,6 +10857,9 @@ issue_job_run_job                ; run the job through the jump table (so it can
         sta job_cmd_tmp
         jmp jt_do_job
 
+; UNREACHABLE CODE ($D957-$D95F, the two 5-byte entries job_read_x80 and job_write_x90): never called.
+; Not referenced by CMD HD BOOTROM v2.80 or JiffyDOS either.
+; Everything goes through job_run, which is all these two wrap.
 ; --- job_read_x80: Run read job on the current buffer
 ; Job $80 read or $90 write on the buffer in cur_buf_idx.
 job_read_x80
@@ -11366,6 +11390,8 @@ swap_bufs_wait_job
         tax
         jmp job_wait
 
+; UNREACHABLE CODE ($DC43-$DC47, 5 bytes): never referenced. Error 70 is raised directly where it is needed.
+; Not referenced by CMD HD BOOTROM v2.80 or JiffyDOS either.
 ; --- err_70_no_channel: Error 70: no channel
 ; Error 70 NO CHANNEL.
 err_70_no_channel
@@ -11536,6 +11562,11 @@ chan_cur_buf2_store_flags
         bit tmp_b
         rts
 
+; ---------------------------------------------------------------------------
+; UNREACHABLE CODE ($DD18-$DD35, 30 bytes): chan_has_buf and chan_set_buf have no callers (no counterpart in
+; CMD HD BOOTROM v2.80, no reference from JiffyDOS). The buffer
+; bookkeeping they would do is repeated inline elsewhere (alloc_chan, swap_chan_bufs).
+; ---------------------------------------------------------------------------
 ; --- chan_has_buf: Z set if the channel has no buffers
 ; Z = 1 if the channel has no buffer at all.
 chan_has_buf
@@ -12850,6 +12881,10 @@ burst_format_bad_param_status
         jmp burst_illegal_status
 burst_format_check_1581_params
         bmi burst_format_validate_params ; this branch is always taken (N set from BIT burst_mode)
+        ; ----- LOGICALLY DEAD CODE ($E642-$E668, 39 bytes including fmt_cmd and fmt_cmd_id) -----
+        ; The BMI above is always taken (it tests N, set by the BIT in the code before this routine), so the
+        ; code that follows can never run. It would copy "N0:CMD HD" and ",89" into the command buffer and call
+        ; the NEW command for a burst format. The text it reads (fmt_cmd, fmt_cmd_id) is dead with it.
         ldx #$00
 burst_format_build_new_command_unused ; (never reached) would build "N0:CMD HD,89" and format
         lda fmt_cmd,x
@@ -15456,6 +15491,18 @@ install_jump_copy_vector_loop
         plp
         rts
 
+; ---------------------------------------------------------------------------
+; REACTIVATED BY CMD HD BOOTROM v2.80
+; load_part_table, copy_part_entry and sys_read_check (with the 16 byte part_hdr_sig) are never called inside
+; this DOS image, but the boot ROM contains the same routines (same signature, same destination tables
+; $8200/$8300/$8600/$8700/$8A00/$8B00) and uses them during startup:
+;   load_part_table  = BOOTROM $DCB6, called from $D0BC and $E547
+;   copy_part_entry  = BOOTROM $DCE7, called from its load_part_table
+;   sys_read_check   = BOOTROM $DD4E, called from $D0C7, $D134 and $E697
+; The boot ROM reads the partition table and the configuration page into the protected RAM, then hands over
+; to the RAM resident DOS by switching the memory map (stub copied to $0100: ALTMAP on, ROMOS off,
+; JMP ($FFFC)). The copies left in this image are therefore only used when the boot ROM runs them.
+; ---------------------------------------------------------------------------
 ; --- load_part_table: Read the partition table from the system partition
 ; Read the partition table from the system partition: 32 blocks of 8 entries each.
 load_part_table
@@ -15692,6 +15739,9 @@ cfg_set0
         sta cfg_0
         jmp ctl_latch_restore
 
+; UNREACHABLE CODE ($F77A-$F78B, 18 bytes): cfg_set_device and cfg_set2 write the two device number bytes
+; of the configuration. Only the other cfg_set_* writers are used. CMD HD BOOTROM v2.80 has the same two
+; routines ($DE00 and $DE09) and does not call them either.
 ; --- cfg_set_device: Write the device number (protected RAM)
 cfg_set_device
         jsr ctl_latch_save_unlock
@@ -15930,6 +15980,10 @@ irq_exit
 ; Free space between the code and the jump table.
 ; Unused space (zero filled) up to the vector tables.
 ; --------------------------------------------------------------------------
+; ---------------------------------------------------------------------------
+; UNUSED SPACE ($F8F0-$FDFF, 1296 bytes of $00)
+; Padding after the last routine (irq_handler) up to the second copyright notice and the jump table area.
+; ---------------------------------------------------------------------------
 free_space                              ; $F8F0
         !fill 1296, $00                 ; $F8F0-$FDFF
 
@@ -15973,12 +16027,21 @@ jump_table_defaults                     ; $FE00
         !word job_to_block                  ; $FE38
         !word cmd_l                  ; $FE3A
         !word cmd_w                  ; $FE3C
+; ---------------------------------------------------------------------------
+; UNUSED SPACE ($FE3E-$FE9F, 98 bytes of $00)
+; ---------------------------------------------------------------------------
 free_space_2                            ; $FE3E
         !fill 98, $00                   ; $FE3E-$FE9F
 
 ; Second copy of the copyright text (not referenced by code).
+; ---------------------------------------------------------------------------
+; UNREFERENCED DATA ($FEA0-$FEE9, 74 bytes): the copyright notice again, never read by any code.
+; ---------------------------------------------------------------------------
 copyright_msg_2                         ; $FEA0
         !text "CMD HD DOS COPYRIGHT 1990 CREATIVE MICRO DESIGNS, INC. ALL RIGHTS RESERVED" ; $FEA0
+; ---------------------------------------------------------------------------
+; UNUSED SPACE ($FEEA-$FEFF, 22 bytes of $00) up to the start of the jump table page.
+; ---------------------------------------------------------------------------
 free_space_3                            ; $FEEA
         !fill 22, $00                   ; $FEEA-$FEFF
 
@@ -16051,6 +16114,10 @@ jt_cmd_l                                ; $FF57
         jmp cmd_l ; 'L'
 jt_cmd_w                                ; $FF5A
         jmp cmd_w ; 'W'
+; ---------------------------------------------------------------------------
+; UNUSED SPACE ($FF5D-$FFF9, 157 bytes of $00) between the end of the jump table and the hardware
+; vectors. In total the image carries 1573 bytes of zero padding.
+; ---------------------------------------------------------------------------
 free_space_4                            ; $FF5D
         !fill 157, $00                  ; $FF5D-$FFF9
 
